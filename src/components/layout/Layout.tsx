@@ -1,9 +1,11 @@
 import RouteProvider from "../../routes/Index";
+import Sidebar from "./sidebar/Sidebar";
 
 const Layout = () => {
   return (
     <>
-      <main>
+      <main className="flex h-screen">
+        <Sidebar/>
         <RouteProvider />
       </main>
     </>
