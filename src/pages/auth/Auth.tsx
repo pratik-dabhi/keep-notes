@@ -1,31 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./auth.css";
 import Icons from "../../components/icons/Icons";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "./useAuth";
 
 const Auth = () => {
 
-const location = useLocation();
-const navigate = useNavigate();
-const [flipCardClass, setFlipCardClass] = useState('');
-
-useEffect(() => {
-    if(location.pathname == '/register') {
-        setFlipCardClass('') ;
-    }else{
-        setFlipCardClass('flip-card') ;
-    }
-}, [location])
-
-const handleFlipCard = () => {
-  if (flipCardClass == 'flip-card') {
-    setFlipCardClass('') ;
-    // navigate('/login');
-  }else{
-    setFlipCardClass('flip-card') ;
-    // setFlipCardClass('/register') ;
-  }
-}
+  const [flipCardClass, handleFlipCard] = useAuth();
 
   return (
       <div className={`md:py-16 lg:py-20 min-h-screen ${flipCardClass} `}>
