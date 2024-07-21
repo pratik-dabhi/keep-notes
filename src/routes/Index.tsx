@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import LazyRoutes from "./LazyRoutes.ts";
 import { Route, Routes } from "react-router-dom";
 import { IRouteElement } from "../interfaces/interfaces.ts";
+import AuthenticationProvider from "../providers/AuthenticationProvider.tsx";
 
 const AuthGuard: React.FC<IRouteElement> = ({ element }) => {
   
@@ -12,7 +13,9 @@ const AuthGuard: React.FC<IRouteElement> = ({ element }) => {
   const LazyElement = element as React.LazyExoticComponent<React.ComponentType>;
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <LazyElement />
+       <AuthenticationProvider>
+        <LazyElement />
+      </AuthenticationProvider>
     </Suspense>
   );
 };

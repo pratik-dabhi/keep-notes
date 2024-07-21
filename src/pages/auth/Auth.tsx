@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "./auth.css";
 import Icons from "../../components/icons/Icons";
-import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "./useAuth";
+import useFlipHandler from "./useFlipHandler";
+import useAuth from "../../hooks/useAuth";
+import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
 
 const Auth = () => {
 
-  const [flipCardClass, handleFlipCard] = useAuth();
+  const [flipCardClass, handleFlipCard] = useFlipHandler();
+
+  const [credential,setCredential] = useState<IUserCredentials>({email: "", password: ""});
+  const [userDetails,setUserDetails] = useState<IUserDetails>({email: "", username:"", password: ""});
+
+  const loginHandler = () => {
+    console.log("credential",credential);
+    
+  }
+
+  const registerHandler = () => {
+    console.log("userDetails",userDetails);
+    
+  }
 
   return (
       <div className={`md:py-16 lg:py-20 min-h-screen ${flipCardClass} `}>
@@ -52,6 +66,7 @@ const Auth = () => {
                   <input
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="email"
+                    onChange={(e) => setCredential({...credential,email:e.target.value})}
                   />
                 </div>
                 <div className="mt-4">
@@ -63,6 +78,7 @@ const Auth = () => {
                   <input
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="password"
+                    onChange={(e) => setCredential({...credential,password:e.target.value})}
                   />
                   <span className="flex justify-end mt-1">
                     <a href="#" className="text-xs text-gray-500">
@@ -71,7 +87,7 @@ const Auth = () => {
                   </span>
                 </div>
                 <div className="mt-8">
-                  <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+                  <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600" onClick={loginHandler}>
                     Login
                   </button>
                 </div>
@@ -98,7 +114,8 @@ const Auth = () => {
                   </label>
                   <input
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                    type="email"
+                    type="text"
+                    onChange={(e) => setUserDetails({...userDetails,username:e.target.value})}
                   />
                 </div>
                 <div className="mt-4">
@@ -108,6 +125,7 @@ const Auth = () => {
                   <input
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="email"
+                    onChange={(e) => setUserDetails({...userDetails,email:e.target.value})}
                   />
                 </div>
                 <div className="mt-4">
@@ -119,6 +137,7 @@ const Auth = () => {
                   <input
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="password"
+                    onChange={(e) => setUserDetails({...userDetails,password:e.target.value})}
                   />
                   <span className="flex justify-end mt-1">
                     <a href="#" className="text-xs text-gray-500">
@@ -127,7 +146,7 @@ const Auth = () => {
                   </span>
                 </div>
                 <div className="mt-8">
-                  <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+                  <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600" onClick={registerHandler}>
                     Sign Up
                   </button>
                 </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const useAuth = (): [string, React.MouseEventHandler<HTMLButtonElement>] => {
+const useFlipHandler = (): [string, React.MouseEventHandler<HTMLButtonElement>] => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,4 +28,4 @@ const useAuth = (): [string, React.MouseEventHandler<HTMLButtonElement>] => {
   return [flipCardClass, handleFlipCard];
 };
 
-export default useAuth;
+export default useFlipHandler;
