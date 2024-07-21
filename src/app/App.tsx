@@ -3,8 +3,8 @@ import './App.css'
 import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import Page404 from '../components/error/Page404'
-import Login from '../pages/login/Login'
 import Layout from '../components/layout/Layout'
+import Auth from '../pages/auth/Auth'
 
 function App() {
   return (
@@ -13,7 +13,8 @@ function App() {
         <Suspense>
           <BrowserRouter>
             <Routes>
-              <Route path='/login' element={ <Login/>}/>
+              <Route path='/login' element={ <Auth/>}/>
+              <Route path='/register' element={ <Auth/>}/>
               <Route path='*' element ={<Layout/>} />
             </Routes>
           </BrowserRouter>

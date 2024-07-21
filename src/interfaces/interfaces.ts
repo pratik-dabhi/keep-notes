@@ -6,4 +6,13 @@ export interface ISeo {
     title : string;
     metaDescription : string;
 }
-  
+
+export interface IImageComponent {
+    src : string;
+    alt : string;
+    className : string;
+}
+
+export interface IImageProps{
+    name : 'MENU' | 'GOOGLE';
+}
