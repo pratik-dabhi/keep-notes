@@ -3,6 +3,7 @@ import "./auth.css";
 import Icons from "../../components/icons/Icons";
 import useFlipHandler from "./useFlipHandler";
   import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
+import { getByEmail } from "../../lib/firebase/query";
 
 const Auth = () => {
 
@@ -11,8 +12,11 @@ const Auth = () => {
   const [credential,setCredential] = useState<IUserCredentials>({email: "", password: ""});
   const [userDetails,setUserDetails] = useState<IUserDetails>({email: "", username:"", password: ""});
 
-  const loginHandler = () => {
-    console.log("credential",credential);
+  const loginHandler = async () => {
+
+    getByEmail(credential.email,'users').then(data => {
+      console.log('Fetched data:', data);
+    });
     
   }
 
