@@ -4,20 +4,25 @@ import Icons from "../../components/icons/Icons";
 import useFlipHandler from "./useFlipHandler";
   import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
 import { getByEmail } from "../../lib/firebase/query";
+import { setItem, stringify } from "../../lib/helper";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
 
   const [flipCardClass, handleFlipCard] = useFlipHandler();
 
+  const navigate = useNavigate();
+
   const [credential,setCredential] = useState<IUserCredentials>({email: "", password: ""});
   const [userDetails,setUserDetails] = useState<IUserDetails>({email: "", username:"", password: ""});
 
   const loginHandler = async () => {
-
     getByEmail(credential.email,'users').then(data => {
-      console.log('Fetched data:', data);
+      if(data?.password == credential.password){
+        setItem('user',stringify(data));
+        navigate('/notes');
+      }
     });
-    
   }
 
   const registerHandler = () => {

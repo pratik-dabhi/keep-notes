@@ -35,4 +35,11 @@ export interface IAuthContext {
     Logout: () => void;
     Login: (userDetails: IUserDetails) => void;
     loggedUser: IUserDetails | null;
-  }
+}
+
+export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
+    id: string,
+    name: string,
+    createdAt : Date
+    updatedAt:Date,
+}
