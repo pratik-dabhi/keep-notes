@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import "./auth.css";
 import Icons from "../../components/icons/Icons";
 import useFlipHandler from "./useFlipHandler";
-  import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
-import { getByEmail } from "../../lib/firebase/query";
+import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
 import { setItem, stringify } from "../../lib/helper";
 import { useNavigate } from "react-router-dom";
+import userService from "../../lib/firebase/services/user.service";
 
 const Auth = () => {
 
@@ -17,7 +17,7 @@ const Auth = () => {
   const [userDetails,setUserDetails] = useState<IUserDetails>({email: "", username:"", password: ""});
 
   const loginHandler = async () => {
-    getByEmail(credential.email,'users').then(data => {
+    userService.getByEmail(credential.email).then(data => {
       if(data?.password == credential.password){
         setItem('user',stringify(data));
         navigate('/notes');
@@ -26,8 +26,9 @@ const Auth = () => {
   }
 
   const registerHandler = () => {
-    console.log("userDetails",userDetails);
-    
+    userService.create(userDetails).then(() => {
+      handleFlipCard()
+    });
   }
 
   return (

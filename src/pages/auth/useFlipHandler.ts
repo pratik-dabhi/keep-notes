@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getItem } from "../../lib/helper";
 
-const useFlipHandler = (): [string, React.MouseEventHandler<HTMLButtonElement>] => {
+const useFlipHandler = (): [string, () => void] => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const useFlipHandler = (): [string, React.MouseEventHandler<HTMLButtonElement>] 
     }
   }, [location,navigate]);
 
-  const handleFlipCard: React.MouseEventHandler<HTMLButtonElement> = () => {
+  const handleFlipCard: () => void = () => {
     if (flipCardClass === "flip-card") {
       setFlipCardClass("");
       navigate("/login");

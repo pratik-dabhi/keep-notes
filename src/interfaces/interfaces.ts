@@ -33,7 +33,6 @@ export interface IUserCredentials extends Omit<IUserDetails, 'username'>{
 
 export interface IAuthContext {
     Logout: () => void;
-    Login: (userDetails: IUserDetails) => void;
     loggedUser: IUserDetails | null;
 }
 
@@ -42,4 +41,10 @@ export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
     name: string,
     createdAt : Date
     updatedAt:Date,
+}
+
+export interface IFilterOpt{
+    key : string,
+    opt :  "<" | "<=" | "==" | "<" | "<=" | "!=",
+    value:string
 }
