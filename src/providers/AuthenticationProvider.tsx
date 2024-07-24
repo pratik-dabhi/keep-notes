@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import AuthenticationContext from "../context/AuthenticationContext";
 import { IChildrenProps, IUserDetails } from "../interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
-import { getItem, parse, removeItem, setItem, stringify } from "../lib/helper";
+import { getItem, parse, removeItem } from "../lib/helper";
 
 const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
   const navigate = useNavigate();
@@ -12,17 +12,11 @@ const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
     const cachedUser = getItem("user");
     if (cachedUser) {
       setLoggedUser(parse(cachedUser));
-    } else {
-      console.log("No user logged in");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (loggedUser) {
-      setItem("user", stringify(loggedUser));
       navigate("/notes", { replace: true });
+    }else{
+      navigate("/login", { replace: true });
     }
-  }, [loggedUser, navigate]);
+  }, [navigate]);
 
   const Login = (userDetails: IUserDetails) => {
     try {

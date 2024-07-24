@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getItem } from "../../lib/helper";
 
 const useFlipHandler = (): [string, React.MouseEventHandler<HTMLButtonElement>] => {
   const location = useLocation();
@@ -8,12 +9,15 @@ const useFlipHandler = (): [string, React.MouseEventHandler<HTMLButtonElement>] 
   const [flipCardClass, setFlipCardClass] = useState("");
 
   useEffect(() => {
+    if(getItem('user')){
+      navigate('/notes');
+    }
     if (location.pathname === "/register") {
       setFlipCardClass("flip-card");
     } else {
       setFlipCardClass("");
     }
-  }, [location]);
+  }, [location,navigate]);
 
   const handleFlipCard: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (flipCardClass === "flip-card") {

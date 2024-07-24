@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./auth.css";
 import Icons from "../../components/icons/Icons";
 import useFlipHandler from "./useFlipHandler";
-import useAuth from "../../hooks/useAuth";
-import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
+  import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
+import { getByEmail } from "../../lib/firebase/query";
+import { setItem, stringify } from "../../lib/helper";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
 
   const [flipCardClass, handleFlipCard] = useFlipHandler();
 
+  const navigate = useNavigate();
+
   const [credential,setCredential] = useState<IUserCredentials>({email: "", password: ""});
   const [userDetails,setUserDetails] = useState<IUserDetails>({email: "", username:"", password: ""});
 
-  const loginHandler = () => {
-    console.log("credential",credential);
-    
+  const loginHandler = async () => {
+    getByEmail(credential.email,'users').then(data => {
+      if(data?.password == credential.password){
+        setItem('user',stringify(data));
+        navigate('/notes');
+      }
+    });
   }
 
   const registerHandler = () => {
@@ -23,7 +31,7 @@ const Auth = () => {
   }
 
   return (
-      <div className={`md:py-16 lg:py-20 min-h-screen ${flipCardClass} `}>
+      <div className={`md:py-16 lg:py-20 xl:py-36 min-h-screen ${flipCardClass} `}>
         <div className="flip-card-inner">
           <div className="flip-card-front">
             <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
@@ -64,7 +72,7 @@ const Auth = () => {
                     Email
                   </label>
                   <input
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    className="text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="email"
                     onChange={(e) => setCredential({...credential,email:e.target.value})}
                   />
@@ -76,7 +84,7 @@ const Auth = () => {
                     </label>
                   </div>
                   <input
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    className=" text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="password"
                     onChange={(e) => setCredential({...credential,password:e.target.value})}
                   />
@@ -113,7 +121,7 @@ const Auth = () => {
                     Username
                   </label>
                   <input
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    className=" text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="text"
                     onChange={(e) => setUserDetails({...userDetails,username:e.target.value})}
                   />
@@ -123,7 +131,7 @@ const Auth = () => {
                     Email
                   </label>
                   <input
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    className=" text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="email"
                     onChange={(e) => setUserDetails({...userDetails,email:e.target.value})}
                   />
@@ -135,7 +143,7 @@ const Auth = () => {
                     </label>
                   </div>
                   <input
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    className=" text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
                     type="password"
                     onChange={(e) => setUserDetails({...userDetails,password:e.target.value})}
                   />
