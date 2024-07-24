@@ -14,7 +14,7 @@ export interface IImageComponent {
 }
 
 export interface IImageProps{
-    name : 'MENU' | 'GOOGLE';
+    name : 'MENU' | 'GOOGLE' | 'SEARCH';
 }
 
 export interface IChildrenProps {
@@ -47,4 +47,8 @@ export interface IFilterOpt{
     key : string,
     opt :  "<" | "<=" | "==" | "<" | "<=" | "!=",
     value:string
+}
+
+export interface ISearchProps{
+    placeholder : string,
 }
