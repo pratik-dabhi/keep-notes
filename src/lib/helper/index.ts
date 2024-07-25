@@ -22,5 +22,13 @@ const parse = (data : string) => {
     return JSON.parse(data);
 }
 
-export { hasUserAuthenticated, setItem, getItem, stringify, removeItem, parse };
+let counter = 0;
+
+const uniqueKeyGenerator = (): string => {
+  const uniqueKey = `${Date.now()}-${counter}`;
+  counter += 1;
+  return uniqueKey;
+};
+
+export { hasUserAuthenticated, setItem, getItem, stringify, removeItem, parse , uniqueKeyGenerator};
 

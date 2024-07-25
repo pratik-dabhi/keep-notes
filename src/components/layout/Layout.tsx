@@ -1,3 +1,4 @@
+import AuthenticationProvider from "../../providers/AuthenticationProvider";
 import RouteProvider from "../../routes/Index";
 import Sidebar from "./sidebar/Sidebar";
 
@@ -5,8 +6,10 @@ const Layout = () => {
   return (
     <>
       <main className="flex h-screen">
-        <Sidebar/>
-        <RouteProvider />
+        <AuthenticationProvider>
+          <Sidebar/>
+          <RouteProvider />
+        </AuthenticationProvider>
       </main>
     </>
   );
