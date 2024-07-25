@@ -6,6 +6,7 @@ import Search from "./Search";
 import Logout from "./Logout";
 import Profile from "./Profile";
 import DoubleAccount from "./DoubleAccount";
+import Pen from "./Pen";
 
 const Icons = ({ name }: IImageProps) => {
   const icons: { [key: string]: JSX.Element } = {
@@ -15,6 +16,7 @@ const Icons = ({ name }: IImageProps) => {
     LOGOUT: <Logout />,
     PROFILE: <Profile />,
     DOUBLE_ACCOUNT: <DoubleAccount />,
+    PEN: <Pen />,
   };
 
   return <> {icons[name] || <div>Icon not found</div>} </>;
