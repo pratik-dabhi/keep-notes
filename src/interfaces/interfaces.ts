@@ -14,7 +14,7 @@ export interface IImageComponent {
 }
 
 export interface IImageProps{
-    name : 'MENU' | 'GOOGLE';
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT';
 }
 
 export interface IChildrenProps {
@@ -33,7 +33,6 @@ export interface IUserCredentials extends Omit<IUserDetails, 'username'>{
 
 export interface IAuthContext {
     Logout: () => void;
-    Login: (userDetails: IUserDetails) => void;
     loggedUser: IUserDetails | null;
 }
 
@@ -42,4 +41,18 @@ export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
     name: string,
     createdAt : Date
     updatedAt:Date,
+}
+
+export interface IFilterOpt{
+    key : string,
+    opt :  "<" | "<=" | "==" | "<" | "<=" | "!=",
+    value:string
+}
+
+export interface ISearchProps{
+    placeholder : string,
+}
+
+export interface ISearchProps{
+    placeholder : string,
 }

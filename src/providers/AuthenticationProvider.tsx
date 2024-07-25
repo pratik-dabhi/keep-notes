@@ -18,24 +18,14 @@ const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
     }
   }, [navigate]);
 
-  const Login = (userDetails: IUserDetails) => {
-    try {
-      setLoggedUser(userDetails);
-      console.log("User logged in:", userDetails);
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
-
   const Logout = () => {
     removeItem("user");
     setLoggedUser(null);
     navigate("/login", { replace: true });
-    console.log("User logged out");
   };
 
   return (
-    <AuthenticationContext.Provider value={{ Login, Logout, loggedUser }}>
+    <AuthenticationContext.Provider value={{Logout, loggedUser }}>
       {children}
     </AuthenticationContext.Provider>
   );
