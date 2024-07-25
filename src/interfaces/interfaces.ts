@@ -52,3 +52,7 @@ export interface IFilterOpt{
 export interface ISearchProps{
     placeholder : string,
 }
+
+export interface ISearchProps{
+    placeholder : string,
+}
