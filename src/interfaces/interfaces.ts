@@ -14,7 +14,7 @@ export interface IImageComponent {
 }
 
 export interface IImageProps{
-    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT';
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW';
 }
 
 export interface IChildrenProps {
@@ -55,4 +55,11 @@ export interface ISearchProps{
 
 export interface ISearchProps{
     placeholder : string,
+}
+
+export interface ILabel {
+    id : number | string,
+    name : string,
+    createdAt ?: Date,
+    updatedAt ?: Date
 }
