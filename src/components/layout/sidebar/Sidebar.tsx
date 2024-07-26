@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import Icons from "../../icons/Icons";
 
@@ -19,12 +20,12 @@ const Sidebar = () => {
                 </div>
                 </li>
                 <li>
-                <a href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                <NavLink to={'/notes'} className='relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6'>
                     <span className="inline-flex justify-center items-center ml-4">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                     </span>
                     <span className="ml-2 text-sm tracking-wide truncate">Notes</span>
-                </a>
+                </NavLink>
                 </li>
                 <li className="px-5">
                 <div className="flex flex-row items-center h-8">
@@ -32,13 +33,13 @@ const Sidebar = () => {
                 </div>
                 </li>
                 <li>
-                <a href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                <NavLink to="/label" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
                     <span className="inline-flex justify-center items-center ml-4">
                         <Icons name="DOUBLE_ACCOUNT" />
                     </span>
                     <span className="ml-2 text-sm tracking-wide truncate">Add Label</span>
                     <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">15</span>
-                </a>
+                </NavLink>
                 </li>
                 <li className="px-5">
                 <div className="flex flex-row items-center h-8">
@@ -46,15 +47,15 @@ const Sidebar = () => {
                 </div>
                 </li>
                 <li>
-                <a href="#" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                <NavLink to="/profile" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
                     <span className="inline-flex justify-center items-center ml-4">
                         <Icons name="PROFILE" />
                     </span>
                     <span className="ml-2 text-sm tracking-wide truncate">Profile</span>
-                </a>
+                </NavLink>
                 </li>
                 <li>
-                <button onClick={Auth.Logout} className="w-full relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                <button onClick={Auth.Logout} className="w-full relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
                     <span className="inline-flex justify-center items-center ml-4">
                         <Icons name="LOGOUT" />
                     </span>

@@ -12,7 +12,6 @@ const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
     const cachedUser = getItem("user");
     if (cachedUser) {
       setLoggedUser(parse(cachedUser));
-      navigate("/notes", { replace: true });
     }else{
       navigate("/login", { replace: true });
     }
