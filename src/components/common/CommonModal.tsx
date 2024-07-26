@@ -5,9 +5,10 @@ type TModalProps = {
   header?: React.ReactNode;
   children?: React.ReactNode;
   onSave?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  width?: string;
 };
 
-export default function CommonModal({setShowModal,header,children,onSave}: TModalProps) {
+export default function CommonModal({setShowModal,header,children,onSave,width}: TModalProps) {
 
   const closeHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -16,9 +17,9 @@ export default function CommonModal({setShowModal,header,children,onSave}: TModa
 
   return (
     <>
-      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+      <div className={`justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none `}>
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col md:w-[500px] lg:w-[700px] bg-white outline-none focus:outline-none">
+          <div className={`border-0 rounded-lg shadow-lg relative flex flex-col md:w-[500px] lg:w-[700px] bg-white outline-none focus:outline-none ${width}`}>
             <div className="flex items-start justify-between border-b border-solid border-blueGray-200 rounded-t">
               {header}
               <button

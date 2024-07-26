@@ -1,7 +1,6 @@
 import React from "react";
-import { TRoute } from "../interfaces/types";
 
-export const LazyRoutes : TRoute[] = 
+export const LazyRoutes = 
     [
         {
             path: '/',

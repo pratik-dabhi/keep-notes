@@ -1,34 +1,23 @@
-import React, { Suspense } from "react";
 import LazyRoutes from "./LazyRoutes.ts";
 import { Route, Routes } from "react-router-dom";
-import { IRouteElement } from "../interfaces/interfaces.ts";
-
-const AuthGuard: React.FC<IRouteElement> = ({ element }) => {
-  
-  if (React.isValidElement(element)) {
-    return element;
-  }
-
-  const LazyElement = element as React.LazyExoticComponent<React.ComponentType>;
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-        <LazyElement />
-    </Suspense>
-  );
-};
+import AuthGuard from "./AuthGuard.tsx";
 
 const Index = () => {
   return (
     <>
-      <Routes>
-        {LazyRoutes.map((route) => (
-          <Route
-            path={route.path}
-            element={<AuthGuard element={route.element as React.LazyExoticComponent<React.ComponentType>}/>}
-            key={route.name}
-          />
-        ))}
-      </Routes>
+    <Routes>
+      {LazyRoutes.map((route) => (
+        <Route
+          key={route.path} 
+          path={route.path}
+          element={
+            <AuthGuard>
+              <route.element/>
+            </AuthGuard>
+          }
+        />
+      ))}
+    </Routes>
     </>
   );
 };
