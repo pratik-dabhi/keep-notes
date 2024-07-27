@@ -30,7 +30,7 @@ const addNotes = (note:TInitialNote) => {
           <Search placeholder="Notes" />
           <Modal noteHandler={addNotes} />
         </div>
-        <div className="flex gap-1 flex-wrap justify-center">
+        <div className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {notes.map((note) =>(
             <Cards sort={note.sort} key={uniqueKeyGenerator()} title={note.title} description={note.description} status={note.status}/>
           ))}

@@ -4,7 +4,12 @@ import Icons from '../../components/icons/Icons';
 import { ILabel } from '../../interfaces/interfaces';
 import { uniqueKeyGenerator } from '../../lib/helper';
 
-const Label = () => {
+type TLabelProps = {
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Label = ({showModal,setShowModal}:TLabelProps) => {
 
 const intialLabels:ILabel[] = [
     {
@@ -21,7 +26,6 @@ const intialLabels:ILabel[] = [
     }
 ]
 
-const [showModal,setShowModal] = useState(true);
 const [labels, setLabels] = useState<ILabel[]>(intialLabels)
 
 type TLabel = {

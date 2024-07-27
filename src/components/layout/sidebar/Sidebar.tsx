@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import Icons from "../../icons/Icons";
+import Label from "../../../pages/label/Label";
+import { useState } from "react";
 
 const Sidebar = () => {
     
   const Auth = useAuth();
+  const [showLabelModal,setShowLabelModal] = useState(false);
 
   return (
     <>
@@ -33,13 +36,13 @@ const Sidebar = () => {
                 </div>
                 </li>
                 <li>
-                <NavLink to="/label" className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
+                <button type="button" onClick={() => {setShowLabelModal(true)}} className="w-full relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
                     <span className="inline-flex justify-center items-center ml-4">
                         <Icons name="DOUBLE_ACCOUNT" />
                     </span>
                     <span className="ml-2 text-sm tracking-wide truncate">Add Label</span>
                     <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">15</span>
-                </NavLink>
+                </button>
                 </li>
                 <li className="px-5">
                 <div className="flex flex-row items-center h-8">
@@ -65,6 +68,7 @@ const Sidebar = () => {
             </ul>
             </div>
         </div>
+        <Label showModal={showLabelModal} setShowModal={setShowLabelModal}/>
     </>
   );
 };

@@ -7,8 +7,6 @@ import { decrypt, encrypt, setItem, stringify } from "../../lib/helper";
 import { useNavigate } from "react-router-dom";
 import userService from "../../lib/firebase/services/user.service";
 
-
-
 const Auth = () => {
 
   const [flipCardClass, handleFlipCard] = useFlipHandler();
