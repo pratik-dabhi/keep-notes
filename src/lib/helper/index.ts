@@ -1,3 +1,5 @@
+import crypto from 'crypto-js';
+
 const hasUserAuthenticated  = () => {
 
 }
@@ -30,5 +32,28 @@ const uniqueKeyGenerator = (): string => {
   return uniqueKey;
 };
 
-export { hasUserAuthenticated, setItem, getItem, stringify, removeItem, parse , uniqueKeyGenerator};
+const encrypt = (value: string): string => {
+    try {
+      const encrypted = crypto.AES.encrypt(value, import.meta.env.VITE_APP_KEY).toString();
+      return encrypted;
+    } catch (error) {
+      console.error("Encryption error:", error);
+      throw error;
+    }
+  };
+  
+const decrypt = (encryptedValue: string): string => {
+    try {
+      const bytes = crypto.AES.decrypt(encryptedValue, import.meta.env.VITE_APP_KEY);
+      const decrypted = bytes.toString(crypto.enc.Utf8);
+      return decrypted;
+    } catch (error) {
+      console.error("Decryption error:", error);
+      throw error;
+    }
+  };
+  
+
+
+export { hasUserAuthenticated, setItem, getItem, stringify, removeItem, parse , uniqueKeyGenerator , encrypt , decrypt};
 

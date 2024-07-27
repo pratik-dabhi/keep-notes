@@ -3,9 +3,11 @@ import "./auth.css";
 import Icons from "../../components/icons/Icons";
 import useFlipHandler from "./useFlipHandler";
 import { IUserCredentials, IUserDetails } from "../../interfaces/interfaces";
-import { setItem, stringify } from "../../lib/helper";
+import { decrypt, encrypt, setItem, stringify } from "../../lib/helper";
 import { useNavigate } from "react-router-dom";
 import userService from "../../lib/firebase/services/user.service";
+
+
 
 const Auth = () => {
 
@@ -18,15 +20,21 @@ const Auth = () => {
 
   const loginHandler = async () => {
     userService.getByEmail(credential.email).then(data => {
-      if(data?.password == credential.password){
-        setItem('user',stringify(data));
-        navigate('/notes');
+      if(data?.password){
+        if(decrypt(data.password) == credential.password){
+          setItem('user',stringify(data));
+          navigate('/notes');
+        }else{
+          console.log("Email or password is incorrect! 1");
+        }
+      }else{
+        console.log("Email or password is incorrect! 2");
       }
     });
   }
 
   const registerHandler = () => {
-    userService.create(userDetails).then(() => {
+    userService.create({...userDetails,password:encrypt(userDetails.password)}).then(() => {
       handleFlipCard()
     });
   }
