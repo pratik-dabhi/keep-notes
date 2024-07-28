@@ -49,27 +49,30 @@ const header = useMemo(() => (
 return (
     <>
         {showModal && 
-        <CommonModal setShowModal={setShowModal} header={header} width={'lg:w-[350px] md:w-[350px] sm:w-[300px]'}>
+        <CommonModal setShowModal={setShowModal} header={header} width={'!w-[300px]'}>
             <div>
-                <ul className=" text-sm font-medium text-gray-900 bg-white">
-                    <li className="w-full mx-4 my-2 flex gap-2">
+                <ul className="text-sm font-medium text-gray-900 bg-white">
+                    <li className="flex justify-center pl-1 mx-4 my-4 gap-2">
                         <span>
                             <Icons name='PEN'/>
                         </span>
                         <input type='text' className="outline-none" placeholder='Create Label' value={label.name}  onChange={(e)=>setLabel({...label,name:e.target.value})}/>
-                        <button onClick={addLableHandler}>
+                        <button onClick={addLableHandler} className='pl-1'>
                             <Icons name='TRUE'/>
                         </button>
                     </li>
-                    {labels.map(label =>(
-                        <li className="w-full mx-2 my-2 flex gap-2" key={uniqueKeyGenerator()}>
-                            <span>
-                            <Icons name='ARROW'/>
+                    {labels.map((label,index) =>(
+                        <li className="flex justify-center mx-4 my-2 gap-2" key={uniqueKeyGenerator()}>
+                            <span className='hover:hidden'>
+                                <Icons name='ARROW'/>
                             </span>
-                            <input type='text' className="outline-none focus:border-b-2 border-dark-500" placeholder='Create Label' value={label.name} onChange={(e)=>console.log(e.target.value)} />
-                            <span>
-                                <Icons name='TRUE'/>
+                            <span className='hidden hover:block'>
+                                <Icons name='ARROW'/>
                             </span>
+                            <input type='text' id={`${index}`} className="outline-none focus:border-b-2 border-dark-500" placeholder='Create Label' value={label.name} onChange={(e)=>console.log(e.target.value)} />
+                            <label htmlFor={`${index}`}>
+                                <Icons name='EDIT_PEN'/>
+                            </label>
                         </li>
                     ))}
                 </ul>

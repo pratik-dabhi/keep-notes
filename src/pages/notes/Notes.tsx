@@ -21,6 +21,7 @@ const loadNotes = useCallback(()=>{
 },[])
 
 const addNotes = (note:TInitialNote) => {
+  notesService.create({...note}).then((result) => {console.log("note added in firebase!" , result);});
   setNotes([...notes,{...note,id:notes.length + 1}])
 }
 

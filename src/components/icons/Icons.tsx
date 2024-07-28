@@ -18,7 +18,8 @@ const Icons = ({ name }: IImageProps) => {
     LOGOUT: <Logout />,
     PROFILE: <Profile />,
     DOUBLE_ACCOUNT: <DoubleAccount />,
-    PEN: <Pen />,
+    PEN: <Pen variant={1} />,
+    EDIT_PEN: <Pen variant={2} />,
     TRUE: <True />,
     ARROW: <Arrow />,
   };

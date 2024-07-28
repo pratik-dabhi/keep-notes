@@ -14,7 +14,7 @@ export interface IImageComponent {
 }
 
 export interface IImageProps{
-    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW';
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN';
 }
 
 export interface IChildrenProps {
