@@ -35,6 +35,10 @@ export interface IAuthContext {
     Logout: () => void;
     loggedUser: IUserDetails | null;
 }
+export interface ISidebarContext {
+    isVisible: boolean;
+    setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
     id: string,

@@ -49,7 +49,7 @@ const header = useMemo(() => (
 return (
     <>
         {showModal && 
-        <CommonModal setShowModal={setShowModal} header={header} width={'!w-[300px]'}>
+        <CommonModal setShowModal={setShowModal} header={header} width={'!w-[325px]'}>
             <div>
                 <ul className="text-sm font-medium text-gray-900 bg-white">
                     <li className="flex justify-center pl-1 mx-4 my-4 gap-2">

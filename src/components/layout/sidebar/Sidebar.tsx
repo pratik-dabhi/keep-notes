@@ -3,15 +3,18 @@ import useAuth from "../../../hooks/useAuth";
 import Icons from "../../icons/Icons";
 import Label from "../../../pages/label/Label";
 import { useState } from "react";
+import useSidebar from "../../../hooks/useSidebar";
 
 const Sidebar = () => {
     
   const Auth = useAuth();
+  const { isVisible} = useSidebar();
+  
   const [showLabelModal,setShowLabelModal] = useState(false);
 
   return (
     <>
-        <div className="flex flex-col w-64 bg-white h-full border-r">
+        <div className={`${isVisible ? 'fixed sm:relative top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0' : 'hidden md:block'} sm:flex flex-col w-64 bg-white h-full border-r`}>
             <div className="flex items-center justify-center h-14 border-b">
                 <h1>{import.meta.env.VITE_APP_NAME}</h1>
             </div>
