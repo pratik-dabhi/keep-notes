@@ -13,8 +13,12 @@ export interface IImageComponent {
     className : string;
 }
 
-export interface IImageProps{
-    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN';
+export interface IIconsProps{
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN' | 'DOTS' ;
+    className ? : string
+}
+export interface IClassNameProps{
+    className ?: string
 }
 
 export interface IChildrenProps {

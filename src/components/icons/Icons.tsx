@@ -1,5 +1,5 @@
 import React from "react";
-import { IImageProps } from "../../interfaces/interfaces";
+import { IIconsProps } from "../../interfaces/interfaces";
 import Menu from "./Menu";
 import Google from "./Google";
 import Search from "./Search";
@@ -9,8 +9,9 @@ import DoubleAccount from "./DoubleAccount";
 import Pen from "./Pen";
 import True from "./True";
 import Arrow from "./Arrow";
+import Dots from "./Dots";
 
-const Icons = ({ name }: IImageProps) => {
+const Icons = ({ name , className }: IIconsProps) => {
   const icons: { [key: string]: JSX.Element } = {
     MENU: <Menu />,
     GOOGLE: <Google />,
@@ -21,7 +22,8 @@ const Icons = ({ name }: IImageProps) => {
     PEN: <Pen variant={1} />,
     EDIT_PEN: <Pen variant={2} />,
     TRUE: <True />,
-    ARROW: <Arrow />,
+    ARROW: <Arrow className={className} />,
+    DOTS: <Dots />,
   };
 
   return <> {icons[name] || <div>Icon not found</div>} </>;
