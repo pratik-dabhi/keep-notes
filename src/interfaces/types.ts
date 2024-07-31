@@ -11,7 +11,7 @@ export type TNote = {
     title : string,
     description: string,
     status: boolean,
-    sort:number,
+    user_id:number | string,
     createdAt : Date,
     updatedAt : Date,
 }

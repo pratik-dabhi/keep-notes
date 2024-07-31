@@ -1,6 +1,6 @@
 import { TNote } from '../../../interfaces/types'
 
-type TNoteProps = Omit<TNote,'id' | 'createdAt' | 'updatedAt'>
+type TNoteProps = Omit<TNote,'id' | 'user_id' | 'createdAt' | 'updatedAt'>
 
 const Cards = ({title , description } : TNoteProps) => {
   return (

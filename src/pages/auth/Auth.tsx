@@ -22,7 +22,7 @@ const Auth = () => {
     userService.getByEmail(data.email).then(response => {
       if(response?.password){
         if(decrypt(response.password) == data.password){
-          setItem('user',stringify(data));
+          setItem('user',stringify(response));
           toast.success(MESSAGES.LOGIN_SUCCESS);
           navigate('/notes');
         }else{

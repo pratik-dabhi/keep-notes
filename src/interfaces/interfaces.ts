@@ -13,8 +13,12 @@ export interface IImageComponent {
     className : string;
 }
 
-export interface IImageProps{
-    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN';
+export interface IIconsProps{
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN' | 'DOTS' ;
+    className ? : string
+}
+export interface IClassNameProps{
+    className ?: string
 }
 
 export interface IChildrenProps {
@@ -22,6 +26,7 @@ export interface IChildrenProps {
 }
 
 export interface IUserDetails {
+    id : string | number;
     username : string,
     email : string,
     password : string,
@@ -50,7 +55,11 @@ export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
 export interface IFilterOpt{
     key : string,
     opt :  "<" | "<=" | "==" | "<" | "<=" | "!=",
-    value:string
+    value: string | number
+}
+export interface IUpdateParams{
+    id : string | number,
+    data : object
 }
 
 export interface ISearchProps{

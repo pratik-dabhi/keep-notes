@@ -5,7 +5,7 @@ const hasUserAuthenticated  = () => {
 }
 
 const setItem = (key: string, value:string) => {
-    return localStorage.setItem(key,stringify(value));
+    return localStorage.setItem(key,value);
 }
 
 const getItem = (key : string) => {

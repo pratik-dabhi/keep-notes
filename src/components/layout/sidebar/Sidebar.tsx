@@ -4,6 +4,7 @@ import Icons from "../../icons/Icons";
 import Label from "../../../pages/label/Label";
 import { useState } from "react";
 import useSidebar from "../../../hooks/useSidebar";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
     
@@ -61,7 +62,7 @@ const Sidebar = () => {
                 </NavLink>
                 </li>
                 <li>
-                <button onClick={Auth.Logout} className="w-full relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
+                <button onClick={() => {Auth.Logout(),toast.success("Logout successfully!")}} className="w-full relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-slate-500 pr-6">
                     <span className="inline-flex justify-center items-center ml-4">
                         <Icons name="LOGOUT" />
                     </span>
