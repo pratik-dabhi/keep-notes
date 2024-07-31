@@ -22,6 +22,7 @@ export interface IChildrenProps {
 }
 
 export interface IUserDetails {
+    id : string | number;
     username : string,
     email : string,
     password : string,
@@ -50,7 +51,7 @@ export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
 export interface IFilterOpt{
     key : string,
     opt :  "<" | "<=" | "==" | "<" | "<=" | "!=",
-    value:string
+    value: string | number
 }
 
 export interface ISearchProps{

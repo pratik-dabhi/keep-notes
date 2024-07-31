@@ -7,17 +7,19 @@ import { uniqueKeyGenerator } from "../../lib/helper"
 import notesService from "../../lib/firebase/services/notes.service"
 import useSidebar from "../../hooks/useSidebar"
 import Icons from "../../components/icons/Icons"
+import useAuth from "../../hooks/useAuth"
 
 const Notes = () => {
 
 const [notes,setNotes] = useState<TNote[]>([]);
+const {loggedUser} = useAuth();
 
 useEffect(()=>{
   loadNotes();
 },[])
 
 const loadNotes = useCallback(()=>{
-  notesService.getAll<TNote>().then((result) => {
+  notesService.get<TNote>({key:'user_id',opt:'==', value: loggedUser?.id ?? ""}).then((result) => {
     setNotes(result);
   });
 },[])
@@ -36,11 +38,11 @@ const { isVisible, setVisible } = useSidebar();
               <Icons name="MENU" />
           </button>
           <Search placeholder="Notes" />
-          <Modal noteHandler={addNotes} />
+          <Modal noteHandler={addNotes} userId = {loggedUser?.id ?? ""} />
         </div>
         <div className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" onClick={()=>isVisible && setVisible(!isVisible)}>
           {notes.map((note) =>(
-            <Cards sort={note.sort} key={uniqueKeyGenerator()} title={note.title} description={note.description} status={note.status}/>
+            <Cards key={uniqueKeyGenerator()} title={note.title} description={note.description} status={note.status}/>
           ))}
         </div>
     </div>

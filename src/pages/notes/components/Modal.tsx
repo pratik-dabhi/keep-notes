@@ -7,18 +7,20 @@ export type TInitialNote = Omit<TNote, 'id'>;
 
 type TModalProps = {
   noteHandler: (note: TInitialNote) => void;
+  userId : string | number;
 };
 
-const initialNotes: TInitialNote = {
-  title: "",
-  description: "",
-  status: false,
-  sort: 1,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+export default function Modal({ noteHandler , userId}: TModalProps) {
 
-export default function Modal({ noteHandler }: TModalProps) {
+  const initialNotes: TInitialNote = {
+    title: "",
+    description: "",
+    status: false,
+    user_id: userId,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   const [showModal, setShowModal] = useState(false);
   const [notes, setNotes] = useState<TInitialNote>(initialNotes);
 
