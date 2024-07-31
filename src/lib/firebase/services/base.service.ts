@@ -1,7 +1,7 @@
-import { addDoc, collection, DocumentData, DocumentReference, getDocs, query, where, WithFieldValue } from "firebase/firestore";
+import { addDoc, collection, doc, DocumentData, documentId, DocumentReference, getDocs, query, updateDoc, where, WithFieldValue } from "firebase/firestore";
 import "../index";
 import { firestore } from "../index";
-import { IFilterOpt } from "../../../interfaces/interfaces";
+import { IFilterOpt, IUpdateParams } from "../../../interfaces/interfaces";
 
 export class BaseService {
   public dbName: string;
@@ -60,14 +60,23 @@ export class BaseService {
     }
   };
 
+  public update = async ({ id, data }: IUpdateParams): Promise<void> => {
+    try {
+      const q = query(collection(firestore, this.dbName), where(documentId(), '==', id));
+      const querySnapshot = await getDocs(q);
 
-  // readonly update = async (data: UpdateOneArgs<M>, options?: Optional<UpdateOneOptions<M>, 'returning'>) => {
-  //   return this.DBModel.update(data, { returning: true, individualHooks: false, ...options });
-  // };
+      if (querySnapshot.empty) {
+        throw new Error("No matching documents found");
+      }
 
-  // readonly deleteData = async (options: DeleteArgs<M>) => {
-  //   return this.DBModel.destroy(options);
-  // };
+      const docRef = doc(firestore, this.dbName, querySnapshot.docs[0].id);
+      return await updateDoc(docRef, data);
+      
+    } catch (error) {
+      console.log("error:[update]", error);
+      throw error;
+    }
+  };
 
 }
 

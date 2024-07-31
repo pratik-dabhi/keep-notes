@@ -53,6 +53,10 @@ export interface IFilterOpt{
     opt :  "<" | "<=" | "==" | "<" | "<=" | "!=",
     value: string | number
 }
+export interface IUpdateParams{
+    id : string | number,
+    data : object
+}
 
 export interface ISearchProps{
     placeholder : string,

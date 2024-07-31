@@ -14,15 +14,13 @@ const Notes = () => {
 const [notes,setNotes] = useState<TNote[]>([]);
 const {loggedUser} = useAuth();
 
-useEffect(()=>{
-  loadNotes();
-},[])
+useEffect(()=>loadNotes(),[])
 
 const loadNotes = useCallback(()=>{
   notesService.get<TNote>({key:'user_id',opt:'==', value: loggedUser?.id ?? ""}).then((result) => {
     setNotes(result);
   });
-},[])
+},[loggedUser])
 
 const addNotes = (note:TInitialNote) => {
   notesService.create({...note}).then((result) => {console.log("note added in firebase!" , result);});

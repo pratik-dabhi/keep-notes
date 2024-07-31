@@ -27,7 +27,7 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
   const closeModalAndResetNotes = useCallback(() => {
     setNotes(initialNotes);
     setShowModal(false);
-  }, []);
+  },[]);
 
   useEffect(() => {
     if (!showModal) {
@@ -53,7 +53,7 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
         onChange={(e) => setNotes({ ...notes, title: e.target.value })}
       />
     </div>
-  ), [notes.title]);
+  ), [notes]);
 
   return (
     <>
