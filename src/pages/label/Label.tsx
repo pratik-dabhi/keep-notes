@@ -19,7 +19,6 @@ const {loggedUser} = useAuth();
 useEffect(() => loadLabel(),[])
 
 const loadLabel = useCallback(()=>{
-    console.log("loaded!!");
     labelService.get<ILabel>({key:'user_id',opt:'==', value: loggedUser?.id ?? ""}).then((result) => {
         setLabels(result);
     });

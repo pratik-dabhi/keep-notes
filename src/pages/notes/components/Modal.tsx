@@ -12,15 +12,17 @@ export type TInitialNote = Omit<TNote, 'id'>;
 type TModalProps = {
   noteHandler: (note: TInitialNote) => void;
   userId : string | number;
+  editNote ?: TInitialNote;
 };
 
-export default function Modal({ noteHandler , userId}: TModalProps) {
+export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
 
   const initialNotes: TInitialNote = {
-    title: "",
-    description: "",
+    title: editNote?.title ?? "",
+    description: editNote?.description ?? "",
     status: false,
     user_id: userId,
+    labels: editNote?.labels ?? [],
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -29,13 +31,14 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notes, setNotes] = useState<TInitialNote>(initialNotes);
   const [labels, setLabels] = useState<ILabel[]>([]);
+  const [noteLabels, setNoteLabels] = useState<ILabel[]>([]);
 
   const closeModalAndResetNotes = useCallback(() => {
     setNotes(initialNotes);
     setShowModal(false);
     setDropdownOpen(false);
   },[]);
-
+  
   useEffect(() => {
     if (!showModal) {
       closeModalAndResetNotes();
@@ -44,17 +47,24 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
 
   const noteSaveHandler = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      noteHandler(notes);
+      noteHandler({...notes,labels:noteLabels});
       closeModalAndResetNotes();
     },
-    [closeModalAndResetNotes, notes, noteHandler]
+    [closeModalAndResetNotes, notes, noteHandler,noteLabels]
   );
 
   const fetchLabel = useCallback(()=>{
     labelService.get<ILabel>({key:'user_id',opt:'==', value: userId}).then((result) => {
         setLabels(result);
     });
-},[])   
+    
+  },[])   
+
+  const setLabelHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const updatedLabel = labels.filter(label => label.id != e.target.id);
+    setNoteLabels([...noteLabels,{id:e.target.id,name:e.target.getAttribute('data-name') ?? ""}]);
+    setLabels(updatedLabel);
+  }
 
   const header = useMemo(() => (
     <div className="mt-4">
@@ -94,6 +104,12 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
                 value={notes.description}
                 onChange={(e) => setNotes({ ...notes, description: e.target.value })}
               />
+              <div className="px-6 pt-4 pb-2">
+                {noteLabels.map((label) =>(
+                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" key={label.id}>#{label.name}</span>
+                ))}
+                
+              </div>
             <button type="button" className={`absolute mt-7 ms-2`} onClick={()=>{fetchLabel(),setDropdownOpen(!dropdownOpen)}}>
                 <Icons name="DOTS" className = {`transition-transform duration-200`}/>
             </button>
@@ -102,7 +118,7 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
                 {labels.map((label)=>(
                 <li key={uniqueKeyGenerator()}>
                   <div className="flex items-center">
-                    <input id={`${label.id}`} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <input id={`${label.id}`} data-name={label.name} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" onChange={e=>setLabelHandler(e)} />
                     <label htmlFor={`${label.id}`} className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{label.name}</label>
                   </div>
                 </li>
