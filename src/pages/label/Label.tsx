@@ -19,7 +19,6 @@ const {loggedUser} = useAuth();
 useEffect(() => loadLabel(),[])
 
 const loadLabel = useCallback(()=>{
-    console.log("loaded!!");
     labelService.get<ILabel>({key:'user_id',opt:'==', value: loggedUser?.id ?? ""}).then((result) => {
         setLabels(result);
     });
@@ -27,11 +26,12 @@ const loadLabel = useCallback(()=>{
 
 const addLableHandler = (e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    labelService.create({name:labelName,user_id:loggedUser?.id}).then((result) => {
-        console.log("label added in firebase!" , result);
-        setLabels([...labels,{name:labelName,id:result.id}]);
-    });
-    setLabelName('');
+    if(labelName){
+        labelService.create({name:labelName,user_id:loggedUser?.id}).then((result) => {
+            setLabels([...labels,{name:labelName,id:result.id}]);
+        });
+        setLabelName('');
+    }
 }
 
 const updateLabelHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

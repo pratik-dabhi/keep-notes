@@ -76,3 +76,9 @@ export interface ILabel {
     createdAt ?: Date,
     updatedAt ?: Date
 }
+export interface INoteLabels {
+    id : number | string,
+    user_id : string,
+    note_id : string,
+    label_id : string
+}

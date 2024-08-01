@@ -40,7 +40,7 @@ const { isVisible, setVisible } = useSidebar();
         </div>
         <div className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" onClick={()=>isVisible && setVisible(!isVisible)}>
           {notes.map((note) =>(
-            <Cards key={uniqueKeyGenerator()} title={note.title} description={note.description} status={note.status}/>
+            <Cards key={uniqueKeyGenerator()} id={note.id} title={note.title} description={note.description} labels={note.labels} status={note.status}/>
           ))}
         </div>
     </div>

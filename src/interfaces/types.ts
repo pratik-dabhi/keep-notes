@@ -1,3 +1,4 @@
+import { ILabel } from "./interfaces"
 
 export type TRoute = {
     path: string,
@@ -7,11 +8,12 @@ export type TRoute = {
 }
 
 export type TNote = {
-    id:number,
+    id:number | string,
     title : string,
     description: string,
     status: boolean,
     user_id:number | string,
+    labels: ILabel[] | [],
     createdAt : Date,
     updatedAt : Date,
 }

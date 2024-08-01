@@ -3,21 +3,26 @@ import { TNote } from "../../../interfaces/types";
 import Icons from "../../../components/icons/Icons";
 import CommonModal from "../../../components/common/CommonModal";
 import DropDown from "../../../components/common/DropDown";
+import labelService from "../../../lib/firebase/services/label.service";
+import { ILabel } from "../../../interfaces/interfaces";
+import { uniqueKeyGenerator } from "../../../lib/helper";
 
 export type TInitialNote = Omit<TNote, 'id'>;
 
 type TModalProps = {
   noteHandler: (note: TInitialNote) => void;
   userId : string | number;
+  editNote ?: TInitialNote;
 };
 
-export default function Modal({ noteHandler , userId}: TModalProps) {
+export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
 
   const initialNotes: TInitialNote = {
-    title: "",
-    description: "",
+    title: editNote?.title ?? "",
+    description: editNote?.description ?? "",
     status: false,
     user_id: userId,
+    labels: editNote?.labels ?? [],
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -25,12 +30,15 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
   const [showModal, setShowModal] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notes, setNotes] = useState<TInitialNote>(initialNotes);
+  const [labels, setLabels] = useState<ILabel[]>([]);
+  const [noteLabels, setNoteLabels] = useState<ILabel[]>([]);
 
   const closeModalAndResetNotes = useCallback(() => {
     setNotes(initialNotes);
     setShowModal(false);
+    setDropdownOpen(false);
   },[]);
-
+  
   useEffect(() => {
     if (!showModal) {
       closeModalAndResetNotes();
@@ -39,11 +47,24 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
 
   const noteSaveHandler = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      noteHandler(notes);
+      noteHandler({...notes,labels:noteLabels});
       closeModalAndResetNotes();
     },
-    [closeModalAndResetNotes, notes, noteHandler]
+    [closeModalAndResetNotes, notes, noteHandler,noteLabels]
   );
+
+  const fetchLabel = useCallback(()=>{
+    labelService.get<ILabel>({key:'user_id',opt:'==', value: userId}).then((result) => {
+        setLabels(result);
+    });
+    
+  },[])   
+
+  const setLabelHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const updatedLabel = labels.filter(label => label.id != e.target.id);
+    setNoteLabels([...noteLabels,{id:e.target.id,name:e.target.getAttribute('data-name') ?? ""}]);
+    setLabels(updatedLabel);
+  }
 
   const header = useMemo(() => (
     <div className="mt-4">
@@ -83,29 +104,25 @@ export default function Modal({ noteHandler , userId}: TModalProps) {
                 value={notes.description}
                 onChange={(e) => setNotes({ ...notes, description: e.target.value })}
               />
-            <button type="button" className={`absolute mt-7 ms-2`} onClick={()=>setDropdownOpen(!dropdownOpen)}>
+              <div className="px-6 pt-4 pb-2">
+                {noteLabels.map((label) =>(
+                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" key={label.id}>#{label.name}</span>
+                ))}
+                
+              </div>
+            <button type="button" className={`absolute mt-7 ms-2`} onClick={()=>{fetchLabel(),setDropdownOpen(!dropdownOpen)}}>
                 <Icons name="DOTS" className = {`transition-transform duration-200`}/>
             </button>
             { dropdownOpen && <DropDown setShowDropdown={setDropdownOpen}>
               <ul className="p-3 m-5 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCheckboxButton">
-                <li>
+                {labels.map((label)=>(
+                <li key={uniqueKeyGenerator()}>
                   <div className="flex items-center">
-                    <input id="checkbox-item-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                    <label htmlFor="checkbox-item-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
+                    <input id={`${label.id}`} data-name={label.name} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" onChange={e=>setLabelHandler(e)} />
+                    <label htmlFor={`${label.id}`} className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{label.name}</label>
                   </div>
                 </li>
-                <li>
-                  <div className="flex items-center">
-                    <input defaultChecked id="checkbox-item-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                    <label htmlFor="checkbox-item-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked state</label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center">
-                    <input id="checkbox-item-3" type="checkbox"   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                    <label htmlFor="checkbox-item-3" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
-                  </div>
-                </li>
+                ))}
               </ul>
             </DropDown> }
             </div>
