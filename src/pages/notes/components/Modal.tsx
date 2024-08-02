@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 import { TNote } from "../../../interfaces/types";
 import Icons from "../../../components/icons/Icons";
 import CommonModal from "../../../components/common/CommonModal";
@@ -23,21 +23,14 @@ export default function Modal({ noteHandler , closeModalHandler , note , userId 
   const [labels, setLabels] = useState<ILabel[]>([]);
   const [noteLabels, setNoteLabels] = useState<ILabel[]>([]);
 
-  // const closeModalAndResetNotes = useCallback(() => {
-  //   setNotes(note);
-  //   setShowModal(false);
-  //   setDropdownOpen(false);
-  // },[]);
-  
-  // useEffect(() => {
-  //   if (!showModal) {
-  //     closeModalAndResetNotes();
-  //   }
-  // }, [showModal, closeModalAndResetNotes]);
+  useEffect(() => {
+    setNoteLabels(note.labels);
+    fetchLabel();
+  }, [note]);
 
   const noteSaveHandler = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      noteHandler({...notes,labels:noteLabels});
+      noteHandler({...notes,labels:[...noteLabels]});
       closeModalHandler();
     },
     [closeModalHandler, notes, noteHandler,noteLabels]
@@ -45,9 +38,11 @@ export default function Modal({ noteHandler , closeModalHandler , note , userId 
 
   const fetchLabel = useCallback(()=>{
     labelService.get<ILabel>({key:'user_id',opt:'==', value: userId}).then((result) => {
-        setLabels(result);
+      const filteredLabels = result.filter(item =>
+        !note.labels.some(alreadyExist => alreadyExist.id === item.id)
+      );
+      setLabels(filteredLabels);
     });
-    
   },[])   
 
   const setLabelHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +95,7 @@ export default function Modal({ noteHandler , closeModalHandler , note , userId 
                 ))}
                 
               </div>
-            <button type="button" className={`absolute mt-7 ms-4`} onClick={()=>{fetchLabel(),setDropdownOpen(!dropdownOpen)}}>
+            <button type="button" className={`absolute mt-7 ms-4`} onClick={()=>setDropdownOpen(!dropdownOpen)}>
                 <Icons name="LABEL" className = {`transition-transform duration-200`}/>
             </button>
             <button type="button" className={`absolute mt-7 ms-12`}>

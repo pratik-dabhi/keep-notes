@@ -45,7 +45,6 @@ const Sidebar = () => {
                         <Icons name="DOUBLE_ACCOUNT" />
                     </span>
                     <span className="ml-2 text-sm tracking-wide truncate">Add Label</span>
-                    <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">15</span>
                 </button>
                 </li>
                 <li className="px-5">

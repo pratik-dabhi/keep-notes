@@ -52,6 +52,12 @@ const closeModalHandler = useCallback(() => {
 const saveNoteHandler = (note:TNote) => {
   if(note.id){
     notesService.update({id:note.id , data : note}).then((result) => {console.log("note updated in firebase!" , result);});
+    const notesIndex = notes.findIndex(item => item.id === note.id);
+    if (notesIndex !== -1) {
+      const updatedNotes = [...notes];
+      updatedNotes[notesIndex] = { ...updatedNotes[notesIndex], ...note};
+      setNotes(updatedNotes);
+    }
   }else{
     notesService.create({...note}).then((result) => {console.log("note added in firebase!" , result);});
     setNotes([...notes,{...note,id:notes.length + 1}])
@@ -61,8 +67,19 @@ const saveNoteHandler = (note:TNote) => {
 
 const editCardHandler = (id : string) => {
   const editedNote = notes.find(note => note.id == id)
-  setInitialNote({...initialNote,id:editedNote?.id, title:editedNote?.title ?? "" , description: editedNote?.description ?? ""})
+  setInitialNote({...initialNote,id:editedNote?.id, title:editedNote?.title ?? "" , description: editedNote?.description ?? "" , labels:editedNote?.labels ?? []})
   setShowModal(true);
+}
+
+const onSearchHandler = (slug:string) => {
+  setTimeout(() => {
+    if (slug) {
+      const searchedNotes = notes.filter(note => note.title.includes(slug) || note.description.includes(slug));
+      setNotes(searchedNotes);
+    } else {
+      loadNotes();
+    }
+  }, 1000);
 }
 
 const { isVisible, setVisible } = useSidebar();
@@ -73,7 +90,7 @@ const { isVisible, setVisible } = useSidebar();
           <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className={`inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`} onClick={()=>setVisible(!isVisible)}>
               <Icons name="MENU" />
           </button>
-          <Search placeholder="Notes" />
+          <Search placeholder="Notes" onSearchHandler={onSearchHandler}  />
 
           <button className="flex gap-2 bg-slate-800 text-white active:bg-slate-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(true)}>
             <Icons name="PEN" />

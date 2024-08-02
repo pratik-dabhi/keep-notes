@@ -64,6 +64,7 @@ export interface IUpdateParams{
 
 export interface ISearchProps{
     placeholder : string,
+    onSearchHandler : (slug:string) => void
 }
 
 export interface ISearchProps{
