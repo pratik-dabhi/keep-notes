@@ -8,7 +8,7 @@ export type TRoute = {
 }
 
 export type TNote = {
-    id:number | string,
+    id ?: number | string,
     title : string,
     description: string,
     status: boolean,
