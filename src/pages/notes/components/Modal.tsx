@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useMemo } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import { TNote } from "../../../interfaces/types";
 import Icons from "../../../components/icons/Icons";
 import CommonModal from "../../../components/common/CommonModal";
@@ -7,50 +7,40 @@ import labelService from "../../../lib/firebase/services/label.service";
 import { ILabel } from "../../../interfaces/interfaces";
 import { uniqueKeyGenerator } from "../../../lib/helper";
 
-export type TInitialNote = Omit<TNote, 'id'>;
 
 type TModalProps = {
-  noteHandler: (note: TInitialNote) => void;
+  note: TNote;
+  noteHandler: (note: TNote) => void;
+  closeModalHandler: () => void;
   userId : string | number;
-  editNote ?: TInitialNote;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
-
-  const initialNotes: TInitialNote = {
-    title: editNote?.title ?? "",
-    description: editNote?.description ?? "",
-    status: false,
-    user_id: userId,
-    labels: editNote?.labels ?? [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  const [showModal, setShowModal] = useState(false);
+export default function Modal({ noteHandler , closeModalHandler , note , userId , setShowModal}: TModalProps) {
+  
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notes, setNotes] = useState<TInitialNote>(initialNotes);
+  const [notes, setNotes] = useState<TNote>(note);
   const [labels, setLabels] = useState<ILabel[]>([]);
   const [noteLabels, setNoteLabels] = useState<ILabel[]>([]);
 
-  const closeModalAndResetNotes = useCallback(() => {
-    setNotes(initialNotes);
-    setShowModal(false);
-    setDropdownOpen(false);
-  },[]);
+  // const closeModalAndResetNotes = useCallback(() => {
+  //   setNotes(note);
+  //   setShowModal(false);
+  //   setDropdownOpen(false);
+  // },[]);
   
-  useEffect(() => {
-    if (!showModal) {
-      closeModalAndResetNotes();
-    }
-  }, [showModal, closeModalAndResetNotes]);
+  // useEffect(() => {
+  //   if (!showModal) {
+  //     closeModalAndResetNotes();
+  //   }
+  // }, [showModal, closeModalAndResetNotes]);
 
   const noteSaveHandler = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       noteHandler({...notes,labels:noteLabels});
-      closeModalAndResetNotes();
+      closeModalHandler();
     },
-    [closeModalAndResetNotes, notes, noteHandler,noteLabels]
+    [closeModalHandler, notes, noteHandler,noteLabels]
   );
 
   const fetchLabel = useCallback(()=>{
@@ -65,6 +55,13 @@ export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
     setNoteLabels([...noteLabels,{id:e.target.id,name:e.target.getAttribute('data-name') ?? ""}]);
     setLabels(updatedLabel);
   }
+  
+  const deleteLabelHandler = (e:React.MouseEvent<HTMLButtonElement>) => {
+    const updatedNoteLabel = noteLabels.filter(label => label.id != e.currentTarget.id)
+    setNoteLabels(updatedNoteLabel);
+    setLabels([...labels,{id:e.currentTarget.id, name:e.currentTarget.getAttribute('data-name') ?? ''}])
+  }
+  
 
   const header = useMemo(() => (
     <div className="mt-4">
@@ -80,16 +77,6 @@ export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
 
   return (
     <>
-      <button
-        className="flex gap-2 bg-slate-800 text-white active:bg-slate-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        <Icons name="PEN" />
-        Note
-      </button>
-
-      {showModal && (
         <CommonModal
           header={header}
           setShowModal={setShowModal}
@@ -106,12 +93,18 @@ export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
               />
               <div className="px-6 pt-4 pb-2">
                 {noteLabels.map((label) =>(
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" key={label.id}>#{label.name}</span>
+                <button id={`${label.id}`} data-name={label.name} className="group inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-400" key={label.id} onClick={(e) => deleteLabelHandler(e)}>
+                  <span>#{label.name} </span>
+                  <span className="ml-1 hidden group-hover:inline">x</span>
+                </button>
                 ))}
                 
               </div>
-            <button type="button" className={`absolute mt-7 ms-2`} onClick={()=>{fetchLabel(),setDropdownOpen(!dropdownOpen)}}>
-                <Icons name="DOTS" className = {`transition-transform duration-200`}/>
+            <button type="button" className={`absolute mt-7 ms-4`} onClick={()=>{fetchLabel(),setDropdownOpen(!dropdownOpen)}}>
+                <Icons name="LABEL" className = {`transition-transform duration-200`}/>
+            </button>
+            <button type="button" className={`absolute mt-7 ms-12`}>
+                <Icons name="IMAGE" className = {`transition-transform duration-200`}/>
             </button>
             { dropdownOpen && <DropDown setShowDropdown={setDropdownOpen}>
               <ul className="p-3 m-5 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCheckboxButton">
@@ -128,7 +121,6 @@ export default function Modal({ noteHandler , editNote , userId}: TModalProps) {
             </div>
           </div>
         </CommonModal>
-      )}
     </>
   );
 }

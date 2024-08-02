@@ -1,4 +1,3 @@
-import React from 'react'
 import { IClassNameProps } from '../../interfaces/interfaces'
 
 const Menu = ({className}: IClassNameProps) => {

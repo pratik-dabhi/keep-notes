@@ -1,6 +1,6 @@
-import React from "react";
 
 const Loader = () => {
+  
   return (
     <div className="flex w-full space-x-2 justify-center items-center bg-white h-screen dark:invert">
       <span className="sr-only">Loading...</span>
