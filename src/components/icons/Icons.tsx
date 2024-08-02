@@ -10,6 +10,8 @@ import Pen from "./Pen";
 import True from "./True";
 import Arrow from "./Arrow";
 import Dots from "./Dots";
+import Label from "./Label";
+import Image from "./Image";
 
 const Icons = ({ name , className }: IIconsProps) => {
   const icons: { [key: string]: JSX.Element } = {
@@ -24,6 +26,8 @@ const Icons = ({ name , className }: IIconsProps) => {
     TRUE: <True />,
     ARROW: <Arrow className={className} />,
     DOTS: <Dots />,
+    LABEL: <Label />,
+    IMAGE: <Image />,
   };
 
   return <> {icons[name] || <div>Icon not found</div>} </>;
