@@ -1,4 +1,3 @@
-import React from "react";
 import { IIconsProps } from "../../interfaces/interfaces";
 import Menu from "./Menu";
 import Google from "./Google";

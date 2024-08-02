@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SidebarContext from "../context/SidebarContext";
 import { IChildrenProps } from "../interfaces/interfaces";
 

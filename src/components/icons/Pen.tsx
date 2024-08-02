@@ -1,4 +1,3 @@
-import React from 'react'
 
 type TPenProps ={
   variant: 1 | 2

@@ -1,4 +1,3 @@
-import React from 'react'
 import { IImageComponent } from '../../interfaces/interfaces'
 
 const Image = ({src , alt , className } : IImageComponent) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ISeo } from '../../interfaces/interfaces';
 import { Helmet } from 'react-helmet';
 
