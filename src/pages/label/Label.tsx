@@ -68,8 +68,9 @@ return (
                     </li>
                     {labels.map((label) => (
                         <li className="flex justify-center mx-4 my-2 gap-2" key={label.id}>
-                            <span className='hover:hidden'>
-                                <Icons name='ARROW'/>
+                            <span className='group'>
+                                <Icons name='ARROW' className='group-hover:hidden'/>
+                                <Icons name='DELETE' className='text-lg text-red-500 hidden group-hover:inline'/>
                             </span>
                             <span className='hidden hover:block'>
                                 <Icons name='ARROW'/>

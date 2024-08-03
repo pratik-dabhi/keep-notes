@@ -14,7 +14,7 @@ export interface IImageComponent {
 }
 
 export interface IIconsProps{
-    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN' | 'DOTS' | 'LABEL' | 'IMAGE';
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN' | 'DOTS' | 'LABEL' | 'IMAGE' | 'DELETE';
     className ? : string
 }
 export interface IClassNameProps{
