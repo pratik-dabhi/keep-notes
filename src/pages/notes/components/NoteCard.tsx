@@ -5,7 +5,7 @@ type TNoteProps = Omit<TNote, 'user_id' | 'createdAt' | 'updatedAt'> & {
   onClickHandler: (id:string) => void;
 };
 
-const Cards = ({title , description , id , labels , onClickHandler} : TNoteProps) => {
+const NoteCard = ({title , description , id , labels , onClickHandler} : TNoteProps) => {
 
   const {isVisible} = useSidebar();
 
@@ -27,4 +27,4 @@ const Cards = ({title , description , id , labels , onClickHandler} : TNoteProps
   )
 }
 
-export default Cards
+export default NoteCard

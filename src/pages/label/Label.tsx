@@ -27,7 +27,7 @@ return (
                         <CreateLabel labelName={labelName} setLabelName={setLabelName} addLableHandler={addLableHandler} />
                     </li>
                     {labels.map((label) => (
-                        <LabelList key={label.id} label={label} updateLabelHandler={updateLabelHandler} />
+                        <LabelList type='MODEL' key={label.id} label={label} updateLabelHandler={updateLabelHandler} />
                     ))}
                 </ul>
             </div>

@@ -6,6 +6,9 @@ import DropDown from "../../../components/common/DropDown";
 import labelService from "../../../lib/firebase/services/label.service";
 import { ILabel } from "../../../interfaces/interfaces";
 import { uniqueKeyGenerator } from "../../../lib/helper";
+import LabelList from "../../label/components/LabelList";
+import CreateLabel from "../../label/components/CreateLabel";
+import { useLabelHandler } from "../../label/useLabelHandler";
 
 
 type TModalProps = {
@@ -16,7 +19,7 @@ type TModalProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Modal({ noteHandler , closeModalHandler , note , userId , setShowModal}: TModalProps) {
+export default function CreateNote({ noteHandler , closeModalHandler , note , userId , setShowModal}: TModalProps) {
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notes, setNotes] = useState<TNote>(note);
@@ -38,25 +41,54 @@ export default function Modal({ noteHandler , closeModalHandler , note , userId 
 
   const fetchLabel = useCallback(()=>{
     labelService.get<ILabel>({key:'user_id',opt:'==', value: userId}).then((result) => {
-      const filteredLabels = result.filter(item =>
-        !note.labels.some(alreadyExist => alreadyExist.id === item.id)
-      );
+      const filteredLabels = result.map(item => {
+        if (note.labels.some(alreadyExist => alreadyExist.id === item.id)) {
+          return { ...item, isChecked : true };
+        } else {
+          return { ...item, isChecked: false };
+        }
+      });
+      
       setLabels(filteredLabels);
     });
   },[])   
 
   const setLabelHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const updatedLabel = labels.filter(label => label.id != e.target.id);
-    setNoteLabels([...noteLabels,{id:e.target.id,name:e.target.getAttribute('data-name') ?? ""}]);
-    setLabels(updatedLabel);
+    
+    const noteLabelIndex = noteLabels.findIndex(item => item.id === e.target.id);
+
+    if(noteLabelIndex == -1){
+      setNoteLabels([...noteLabels,{id:e.target.id,name:e.target.getAttribute('data-name') ?? ""}]);
+    }else{
+      const updatedNoteLabel = noteLabels.filter(label => label.id != e.target.id)
+      setNoteLabels(updatedNoteLabel);
+    }
+    
+    const labelIndex = labels.findIndex(item => item.id === e.target.id);
+
+    if (labelIndex !== -1) {
+      const updatedLabels = [...labels];
+      updatedLabels[labelIndex] = { ...updatedLabels[labelIndex], isChecked: !updatedLabels[labelIndex].isChecked };
+      setLabels(updatedLabels);
+    }
+    
   }
   
   const deleteLabelHandler = (e:React.MouseEvent<HTMLButtonElement>) => {
-    const updatedNoteLabel = noteLabels.filter(label => label.id != e.currentTarget.id)
+    const updatedNoteLabel = noteLabels.filter(label => label.id != e.currentTarget.getAttribute('data-id'))
     setNoteLabels(updatedNoteLabel);
-    setLabels([...labels,{id:e.currentTarget.id, name:e.currentTarget.getAttribute('data-name') ?? ''}])
+
+    const labelIndex = labels.findIndex(item => item.id === e.currentTarget.getAttribute('data-id'));
+
+    if (labelIndex !== -1) {
+      const updatedLabels = [...labels];
+      updatedLabels[labelIndex] = { ...updatedLabels[labelIndex], isChecked: false };
+      setLabels(updatedLabels);
+    }
+
   }
-  
+
+  const {labelName,setLabelName,addLableHandler} = useLabelHandler();
 
   const header = useMemo(() => (
     <div className="mt-4">
@@ -88,7 +120,7 @@ export default function Modal({ noteHandler , closeModalHandler , note , userId 
               />
               <div className="px-6 pt-4 pb-2">
                 {noteLabels.map((label) =>(
-                <button id={`${label.id}`} data-name={label.name} className="group inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-400" key={label.id} onClick={(e) => deleteLabelHandler(e)}>
+                <button data-id={`${label.id}`} data-name={label.name} className="group inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-400" key={label.id} onClick={(e) => deleteLabelHandler(e)}>
                   <span>#{label.name} </span>
                   <span className="ml-1 hidden group-hover:inline">x</span>
                 </button>
@@ -102,15 +134,13 @@ export default function Modal({ noteHandler , closeModalHandler , note , userId 
                 <Icons name="IMAGE" className = {`transition-transform duration-200`}/>
             </button>
             { dropdownOpen && <DropDown setShowDropdown={setDropdownOpen}>
-              <ul className="p-3 m-5 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCheckboxButton">
-                {labels.map((label)=>(
-                <li key={uniqueKeyGenerator()}>
-                  <div className="flex items-center">
-                    <input id={`${label.id}`} data-name={label.name} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" onChange={e=>setLabelHandler(e)} />
-                    <label htmlFor={`${label.id}`} className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{label.name}</label>
-                  </div>
+              <ul className="p-3 m-5 space-y-3 text-sm text-gray-700" aria-labelledby="dropdownCheckboxButton">
+                <li className="flex justify-center pl-1 mx-4 my-4 gap-2">
+                  <CreateLabel labelName={labelName} setLabelName={setLabelName} addLableHandler={addLableHandler} />
                 </li>
-                ))}
+              {labels.map((label) => (
+                <LabelList type="DROPDOWN" isChecked={label.isChecked} key={label.id} label={label} updateLabelHandler={setLabelHandler} />
+              ))}
               </ul>
             </DropDown> }
             </div>

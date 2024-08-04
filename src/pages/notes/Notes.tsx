@@ -1,8 +1,8 @@
 import {useCallback, useEffect, useState } from "react"
 import Search from "../../components/common/Search"
 import { TNote } from "../../interfaces/types"
-import Cards from "./components/Cards"
-import Modal from "./components/Modal"
+import NoteCard from "./components/NoteCard"
+import CreateNote from "./components/CreateNote"
 import { uniqueKeyGenerator } from "../../lib/helper"
 import notesService from "../../lib/firebase/services/notes.service"
 import useSidebar from "../../hooks/useSidebar"
@@ -97,11 +97,11 @@ const { isVisible, setVisible } = useSidebar();
             Note
           </button>
 
-          { showModal && <Modal noteHandler={saveNoteHandler} closeModalHandler={closeModalHandler} setShowModal={setShowModal} note={initialNote} userId = {loggedUser?.id ?? ""} />}
+          { showModal && <CreateNote noteHandler={saveNoteHandler} closeModalHandler={closeModalHandler} setShowModal={setShowModal} note={initialNote} userId = {loggedUser?.id ?? ""} />}
         </div>
         <div className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4" onClick={()=>isVisible && setVisible(!isVisible)}>
           {notes.map((note) =>(
-            <Cards key={uniqueKeyGenerator()} id={note.id} title={note.title} description={note.description} labels={note.labels} status={note.status} onClickHandler={editCardHandler}/>
+            <NoteCard key={uniqueKeyGenerator()} id={note.id} title={note.title} description={note.description} labels={note.labels} status={note.status} onClickHandler={editCardHandler}/>
           ))}
         </div>
     </div>

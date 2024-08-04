@@ -74,6 +74,7 @@ export interface ISearchProps{
 export interface ILabel {
     id : number | string,
     name : string,
+    isChecked ?: boolean,
     createdAt ?: Date,
     updatedAt ?: Date
 }
