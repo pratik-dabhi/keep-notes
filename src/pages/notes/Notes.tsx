@@ -86,15 +86,16 @@ const { isVisible, setVisible } = useSidebar();
 
   return (
     <div className="flex flex-col w-full mx-auto px-4"  >
-        <div className="flex justify-between mt-1">
-          <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className={`inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`} onClick={()=>setVisible(!isVisible)}>
+        <div className="flex justify-between align-center mt-1">
+          <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className={`p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`} onClick={()=>setVisible(!isVisible)}>
               <Icons name="MENU" />
           </button>
+          
           <Search placeholder="Notes" onSearchHandler={onSearchHandler}  />
 
-          <button className="flex gap-2 bg-slate-800 text-white active:bg-slate-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(true)}>
+          <button className="flex gap-2 bg-slate-800 text-white active:bg-slate-600 font-bold uppercase text-sm px-6 h-10 mt-[6px] py-3 sm:py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={() => setShowModal(true)}>
             <Icons name="PEN" />
-            Note
+            <span className="hidden sm:block">Note</span>
           </button>
 
           { showModal && <CreateNote noteHandler={saveNoteHandler} closeModalHandler={closeModalHandler} setShowModal={setShowModal} note={initialNote} userId = {loggedUser?.id ?? ""} />}
