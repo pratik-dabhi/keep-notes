@@ -40,5 +40,5 @@ export const useLabelHandler = () => {
         }, 1000);
     };
 
-    return {labels, labelName, setLabelName, addLableHandler,updateLabelHandler};
+    return {labels,setLabels, labelName, setLabelName, addLableHandler,updateLabelHandler};
 }

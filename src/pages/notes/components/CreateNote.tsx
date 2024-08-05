@@ -5,7 +5,6 @@ import CommonModal from "../../../components/common/CommonModal";
 import DropDown from "../../../components/common/DropDown";
 import labelService from "../../../lib/firebase/services/label.service";
 import { ILabel } from "../../../interfaces/interfaces";
-import { uniqueKeyGenerator } from "../../../lib/helper";
 import LabelList from "../../label/components/LabelList";
 import CreateLabel from "../../label/components/CreateLabel";
 import { useLabelHandler } from "../../label/useLabelHandler";
@@ -23,8 +22,8 @@ export default function CreateNote({ noteHandler , closeModalHandler , note , us
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notes, setNotes] = useState<TNote>(note);
-  const [labels, setLabels] = useState<ILabel[]>([]);
   const [noteLabels, setNoteLabels] = useState<ILabel[]>([]);
+  const {labels,labelName,setLabelName,addLableHandler,setLabels} = useLabelHandler();
 
   useEffect(() => {
     setNoteLabels(note.labels);
@@ -88,7 +87,7 @@ export default function CreateNote({ noteHandler , closeModalHandler , note , us
 
   }
 
-  const {labelName,setLabelName,addLableHandler} = useLabelHandler();
+  
 
   const header = useMemo(() => (
     <div className="mt-4">
@@ -135,7 +134,7 @@ export default function CreateNote({ noteHandler , closeModalHandler , note , us
             </button>
             { dropdownOpen && <DropDown setShowDropdown={setDropdownOpen}>
               <ul className="p-3 m-5 space-y-3 text-sm text-gray-700" aria-labelledby="dropdownCheckboxButton">
-                <li className="flex justify-center pl-1 mx-4 my-4 gap-2">
+                <li className="flex justify-center gap-2">
                   <CreateLabel labelName={labelName} setLabelName={setLabelName} addLableHandler={addLableHandler} />
                 </li>
               {labels.map((label) => (

@@ -9,7 +9,7 @@ type TDropDownProps = {
 const Dropdown = ({children,setShowDropdown}:TDropDownProps) => {
 
   return (
-      <div className={`absolute mt-8 start-8 w-1/5 transition-opacity duration-200 opacity-100 min-w-60 bg-white shadow-md rounded-lg p-1 space-y-0.5 mt-2`}>
+      <div className={`absolute mt-8 start-8 transition-opacity duration-200 opacity-100 min-w-60 bg-white shadow-md rounded-lg p-1 space-y-0.5 mt-2`}>
         <div className="">
           <button className="p-3 ml-auto bg-transparent text-black opacity-70 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" onClick={() => setShowDropdown(false)}>
             <span className="text-white">×</span>
