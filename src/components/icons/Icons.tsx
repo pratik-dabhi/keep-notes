@@ -12,6 +12,7 @@ import Dots from "./Dots";
 import Label from "./Label";
 import Image from "./Image";
 import Delete from "./Delete";
+import Upload from "./Upload";
 
 const Icons = ({ name , className }: IIconsProps) => {
   const icons: { [key: string]: JSX.Element } = {
@@ -29,6 +30,7 @@ const Icons = ({ name , className }: IIconsProps) => {
     LABEL: <Label />,
     IMAGE: <Image />,
     DELETE: <Delete className={className} />,
+    UPLOAD : <Upload />
   };
 
   return <> {icons[name] || <div>Icon not found</div>} </>;
