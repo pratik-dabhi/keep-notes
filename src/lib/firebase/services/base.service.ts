@@ -1,7 +1,8 @@
 import { addDoc, collection, doc, DocumentData, documentId, DocumentReference, getDocs, query, updateDoc, where, WithFieldValue } from "firebase/firestore";
 import "../index";
-import { firestore } from "../index";
+import { firestore, storage } from "../index";
 import { IFilterOpt, IUpdateParams } from "../../../interfaces/interfaces";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export class BaseService {
   public dbName: string;
@@ -77,6 +78,20 @@ export class BaseService {
       throw error;
     }
   };
+
+  public upload = async (file: File): Promise<string> => {
+    try {
+
+      const storageRef = ref(storage, `profiles/${file.name}`); 
+      await uploadBytes(storageRef, file); 
+      const downloadURL = await getDownloadURL(storageRef); 
+      return downloadURL;
+
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error; 
+    }
+  }
 
 }
 

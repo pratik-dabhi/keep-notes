@@ -12,6 +12,11 @@ export const LazyRoutes =
             name: 'Notes',
             element: React.lazy(() => import("../pages/notes/Notes")),
         },
+        {
+            path: '/profile',
+            name: 'Profile',
+            element: React.lazy(() => import("../pages/settings/Profile")),
+        },
     ];
   
 export default LazyRoutes;

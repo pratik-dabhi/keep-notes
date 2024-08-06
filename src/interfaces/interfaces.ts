@@ -1,3 +1,5 @@
+import React, {SetStateAction } from "react";
+
 export interface IRouteElement {
     element: React.ReactElement | React.LazyExoticComponent<React.ComponentType>,
 }
@@ -14,7 +16,7 @@ export interface IImageComponent {
 }
 
 export interface IIconsProps{
-    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN' | 'DOTS' | 'LABEL' | 'IMAGE' | 'DELETE';
+    name : 'MENU' | 'GOOGLE' | 'SEARCH' | 'LOGOUT' | 'PROFILE' | 'DOUBLE_ACCOUNT' | 'PEN' | 'TRUE'| 'ARROW' | 'EDIT_PEN' | 'DOTS' | 'LABEL' | 'IMAGE' | 'DELETE' | 'UPLOAD';
     className ? : string
 }
 export interface IClassNameProps{
@@ -30,6 +32,7 @@ export interface IUserDetails {
     username : string,
     email : string,
     password : string,
+    profile ? : string 
 }
 
 export interface IUserCredentials extends Omit<IUserDetails, 'username'>{
@@ -44,12 +47,16 @@ export interface ISidebarContext {
     isVisible: boolean;
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
+export interface ILoaderContext {
+    isLoading: boolean;
+    setLoading: React.Dispatch<SetStateAction<boolean>>;
+}
 
 export interface IFirebaseUser extends Omit<IUserDetails, 'username'> {
     id: string,
     name: string,
-    createdAt : Date
-    updatedAt:Date,
+    createdAt ?: Date
+    updatedAt ?:Date,
 }
 
 export interface IFilterOpt{

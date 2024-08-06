@@ -51,9 +51,16 @@ const decrypt = (encryptedValue: string): string => {
       console.error("Decryption error:", error);
       throw error;
     }
-  };
+};
+
+const getFileName = (name = "") => {
+  const timestamp = new Date().toISOString().replace(/[-:.]/g,"");  
+  const randomNumber = ("_" + Math.random()).substring(2, 8); 
+  const generatedFilename = name + timestamp+randomNumber;  
+  return generatedFilename;
+}
   
 
 
-export { hasUserAuthenticated, setItem, getItem, stringify, removeItem, parse , uniqueKeyGenerator , encrypt , decrypt};
+export { hasUserAuthenticated, setItem, getItem, stringify, removeItem, parse , uniqueKeyGenerator , encrypt , decrypt , getFileName};
 
