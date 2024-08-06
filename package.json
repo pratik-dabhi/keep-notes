@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Pratik Dabhi",
+  "keywords": ["keep-notes", "firebase","firebase database","react","vite","tailwindcss"],
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
