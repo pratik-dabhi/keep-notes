@@ -47,8 +47,8 @@ To get started with the project, follow these steps:
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/pratik-dabhi/notes-app.git
-   cd notes-app
+   git clone https://github.com/pratik-dabhi/keep-notes.git
+   cd keep-notes
 
 2. **Install dependencies:**
    ```sh
