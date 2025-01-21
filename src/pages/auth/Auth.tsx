@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import userService from "../../lib/firebase/services/user.service";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { toast } from 'react-toastify';
-import { MESSAGES } from "../../lib/constant";
+import { IMAGES, MESSAGES } from "../../lib/constant";
 
 const Auth = () => {
 
@@ -52,7 +52,7 @@ const Auth = () => {
 
           <div className="flip-card-front">
             <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-              <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage:'url("https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80")',}}></div>
+              <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage:`url(${IMAGES.LOGIN})`,}}></div>
               <div className="w-full p-8 lg:w-1/2">
                 <h2 className="text-2xl font-semibold text-gray-700 text-center">
                   {import.meta.env.VITE_APP_NAME}
@@ -151,7 +151,7 @@ const Auth = () => {
                   <p className="px-4 py-3 w-100 text-center"> Have an account?{" "} <button onClick={handleFlipCard} className="text-gray-600 font-bold"> Login</button></p>
                 </div>
               </div>
-              <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage:'url("https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80")',}}></div>
+              <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage:`url(${IMAGES.LOGIN})`}}></div>
             </div>
           </div>
 
