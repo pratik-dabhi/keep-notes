@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { ILabel } from "../../interfaces/interfaces";
 import useAuth from "../../hooks/useAuth";
 import labelService from "../../lib/firebase/services/label.service";
@@ -7,6 +7,7 @@ export const useLabelHandler = () => {
   const [labels, setLabels] = useState<ILabel[]>([]);
   const [labelName, setLabelName] = useState("");
   const { loggedUser } = useAuth();
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => loadLabel(), []);
 
@@ -18,7 +19,7 @@ export const useLabelHandler = () => {
       });
   }, [loggedUser]);
 
-  const addLableHandler = () => {
+  const addLabelHandler = () => {
     if (labelName) {
       labelService
         .create({ name: labelName, user_id: loggedUser?.id })
@@ -35,9 +36,20 @@ export const useLabelHandler = () => {
       label.id === id ? { ...label, name: value } : label,
     );
     setLabels(updatedLabels);
-    setTimeout(() => {
+
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
+    }
+
+    updateTimeoutRef.current = setTimeout(() => {
       labelService.update({ id: id, data: { name: value } });
     }, 1000);
+  };
+
+  const deleteLabelHandler = (id: string | number) => {
+    labelService.delete(id.toString()).then(() => {
+      setLabels((prevLabels) => prevLabels.filter((label) => label.id !== id));
+    });
   };
 
   return {
@@ -45,7 +57,8 @@ export const useLabelHandler = () => {
     setLabels,
     labelName,
     setLabelName,
-    addLableHandler,
+    addLabelHandler,
     updateLabelHandler,
+    deleteLabelHandler,
   };
 };

@@ -30,7 +30,7 @@ export default function CreateNote({
   const [notes, setNotes] = useState<TNote>(note);
   const [isExpanded, setIsExpanded] = useState(!isInline);
   const [noteLabels, setNoteLabels] = useState<ILabel[]>([]);
-  const { labels, labelName, setLabelName, addLableHandler, setLabels } =
+  const { labels, labelName, setLabelName, addLabelHandler, setLabels } =
     useLabelHandler();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -195,7 +195,7 @@ export default function CreateNote({
                           <CreateLabel
                             labelName={labelName}
                             setLabelName={setLabelName}
-                            addLableHandler={addLableHandler}
+                            addLabelHandler={addLabelHandler}
                           />
                         </li>
                         {labels.map((label) => (
