@@ -2,11 +2,14 @@ import { useState } from "react";
 import SidebarContext from "../context/SidebarContext";
 import { IChildrenProps } from "../interfaces/interfaces";
 
-const SidebarProvider = ({children}:IChildrenProps) => {
+const SidebarProvider = ({ children }: IChildrenProps) => {
   const [isVisible, setVisible] = useState(false);
+  const [isCollapsed, setCollapsed] = useState(false);
 
   return (
-    <SidebarContext.Provider value={{ isVisible, setVisible }}>
+    <SidebarContext.Provider
+      value={{ isVisible, setVisible, isCollapsed, setCollapsed }}
+    >
       {children}
     </SidebarContext.Provider>
   );

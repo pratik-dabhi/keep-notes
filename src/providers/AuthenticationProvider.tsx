@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AuthenticationContext from "../context/AuthenticationContext";
 import { IChildrenProps, IUserDetails } from "../interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
-import { getItem, parse, removeItem } from "../lib/helper";
+import { getItem, parse, removeItem, setItem, stringify } from "../lib/helper";
 import Loader from "../components/common/Loader";
 
 const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
@@ -11,10 +11,16 @@ const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (loggedUser) {
+      setItem("user", stringify(loggedUser));
+    }
+  }, [loggedUser]);
+
+  useEffect(() => {
     const cachedUser = getItem("user");
     if (cachedUser) {
       setLoggedUser(parse(cachedUser));
-    }else{
+    } else {
       navigate("/login", { replace: true });
     }
     setLoading(false);
@@ -27,11 +33,13 @@ const AuthenticationProvider: React.FC<IChildrenProps> = ({ children }) => {
   };
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
-    <AuthenticationContext.Provider value={{ Logout, loggedUser }}>
+    <AuthenticationContext.Provider
+      value={{ Logout, loggedUser, setLoggedUser }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );

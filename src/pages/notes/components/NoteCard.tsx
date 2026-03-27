@@ -1,30 +1,76 @@
-import useSidebar from '../../../hooks/useSidebar';
-import { TNote } from '../../../interfaces/types'
+import useSidebar from "../../../hooks/useSidebar";
+import { TNote } from "../../../interfaces/types";
+import Icons from "../../../components/icons/Icons";
 
-type TNoteProps = Omit<TNote, 'user_id' | 'createdAt' | 'updatedAt'> & {
-  onClickHandler: (id:string) => void;
+type TNoteProps = Omit<TNote, "user_id" | "createdAt" | "updatedAt"> & {
+  onClickHandler: (id: string) => void;
+  onDeleteHandler: (id: string) => void;
 };
 
-const NoteCard = ({title , description , id , labels , onClickHandler} : TNoteProps) => {
-
-  const {isVisible} = useSidebar();
+const NoteCard = ({
+  title,
+  description,
+  id,
+  labels,
+  onClickHandler,
+  onDeleteHandler,
+  color,
+}: TNoteProps) => {
+  const { isVisible } = useSidebar();
 
   return (
-    <div className="md:max-w-md rounded overflow-hidden shadow-lg" id={`${id}`} onClick={(e)=>!isVisible && onClickHandler(e.currentTarget.id)}>
-    {/* <img className="w-full" src="https://images.squarespace-cdn.com/content/v1/60f1a490a90ed8713c41c36c/1629223610791-LCBJG5451DRKX4WOB4SP/37-design-powers-url-structure.jpeg?format=2500w" alt="Sunset in the mountains" /> */}
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{title}</div>
-        <p className="text-gray-700 text-base">
-          {description}
-        </p>
+    <div
+      className="group relative flex flex-col bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-default h-fit"
+      style={{ backgroundColor: color || "white" }}
+      id={`${id}`}
+      onClick={(e) => !isVisible && onClickHandler(e.currentTarget.id)}
+    >
+      {title && (
+        <div className="font-medium text-lg mb-2 text-gray-800 break-words">
+          {title}
+        </div>
+      )}
+
+      <div className="text-gray-600 text-sm whitespace-pre-wrap break-words mb-4">
+        {description}
       </div>
-      <div className="px-6 pt-4 pb-2">
-        {labels.map(label =>(
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" key={label.id}>#{label.name}</span>
+
+      <div className="flex flex-wrap gap-1 mb-2">
+        {labels.map((label) => (
+          <span
+            className="inline-block bg-gray-100/80 border border-gray-200 rounded px-2 py-0.5 text-[10px] font-medium text-gray-500"
+            key={label.id}
+          >
+            {label.name}
+          </span>
         ))}
       </div>
-  </div>
-  )
-}
 
-export default NoteCard
+      {/* Hover Actions */}
+      <div className="absolute bottom-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          className="p-1.5 hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
+          title="Delete"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteHandler(id as string);
+          }}
+        >
+          <Icons name="DELETE" className="w-4 h-4" />
+        </button>
+        <button
+          className="p-1.5 hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
+          title="Edit"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickHandler(id as string);
+          }}
+        >
+          <Icons name="EDIT_PEN" className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default NoteCard;
