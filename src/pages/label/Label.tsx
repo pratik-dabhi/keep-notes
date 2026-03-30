@@ -21,9 +21,15 @@ const Label = ({ showModal, setShowModal }: TLabelProps) => {
 
   const header = useMemo(
     () => (
-      <h1 className="text-gray-800 font-medium text-[16px] my-1 py-2 px-4 block appearance-none">
-        Edit labels
-      </h1>
+      <div className="w-full px-5 py-4">
+        <div className="mt-1 flex items-start justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+              Edit labels
+            </h1>
+          </div>
+        </div>
+      </div>
     ),
     [],
   );
@@ -34,19 +40,21 @@ const Label = ({ showModal, setShowModal }: TLabelProps) => {
         <CommonModal
           setShowModal={setShowModal}
           header={header}
-          width={"!w-[300px]"}
+          onClose={() => setShowModal(false)}
+          width={"w-[320px] sm:w-[360px] md:w-[420px] lg:w-[480px] max-w-full"}
         >
-          <div className="pb-2">
-            <ul className="text-sm font-medium text-gray-900 bg-white">
-              <li className="flex justify-center px-2 py-1 mx-2 mb-2 gap-2">
+          <div className="pb-3 pt-1 px-1">
+            <ul className="text-sm font-medium text-gray-900 max-h-[300px] overflow-y-auto px-1 pb-1 space-y-1">
+              <li className="sticky top-0 z-10 bg-white/95 backdrop-blur px-2 py-1 shadow-sm rounded-lg">
                 <CreateLabel
                   labelName={labelName}
                   setLabelName={setLabelName}
                   addLabelHandler={addLabelHandler}
                 />
               </li>
-              <div className="max-h-[250px] overflow-y-auto">
-                {labels.map((label) => (
+
+              {labels.length > 0 ? (
+                labels.map((label) => (
                   <LabelList
                     type="MODEL"
                     key={label.id}
@@ -54,8 +62,20 @@ const Label = ({ showModal, setShowModal }: TLabelProps) => {
                     updateLabelHandler={updateLabelHandler}
                     deleteLabelHandler={deleteLabelHandler}
                   />
-                ))}
-              </div>
+                ))
+              ) : (
+                <li className="px-5 py-8 text-center text-gray-600 bg-white/70 rounded-lg">
+                  <div className="inline-flex flex-col items-center gap-2">
+                    <span className="text-2xl">🏷️</span>
+                    <p className="text-sm font-semibold text-gray-800">
+                      No labels yet
+                    </p>
+                    <p className="text-xs text-gray-500 max-w-[220px]">
+                      Create your first label to keep notes organized.
+                    </p>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         </CommonModal>

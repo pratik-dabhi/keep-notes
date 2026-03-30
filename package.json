@@ -20,6 +20,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@types/crypto-js": "^4.2.2",
     "@types/react-helmet": "^6.1.11",
     "crypto-js": "^4.2.0",

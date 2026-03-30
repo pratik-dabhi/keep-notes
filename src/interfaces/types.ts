@@ -15,6 +15,7 @@ export type TNote = {
   user_id: number | string;
   labels: ILabel[] | [];
   color?: string;
+  orderIndex?: number;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -24,26 +24,28 @@ const LabelList = ({
     <>
       {type === "MODEL" ? (
         <li
-          className="flex items-center mx-2 my-1 px-2 py-1 group"
+          className="flex items-center mx-2 my-1 px-3 py-2 rounded-xl border border-transparent hover:border-gray-200 hover:bg-gray-50 shadow-sm group transition"
           key={label.id}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <span
-            className="p-1 flex shrink-0 items-center justify-center w-8 h-8 text-gray-500 rounded-full hover:bg-gray-100 cursor-pointer transition-colors"
+          <button
+            type="button"
+            className="p-1 flex shrink-0 items-center justify-center w-9 h-9 text-gray-500 rounded-full hover:bg-red-50 hover:text-red-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-200 transition-colors"
             title="Delete label"
+            aria-label={`Delete label ${label.name}`}
             onClick={() => deleteLabelHandler && deleteLabelHandler(label.id)}
           >
             {isHovered || isFocused ? (
-              <Icons name="DELETE" className="text-gray-600" />
+              <Icons name="DELETE" className="text-current" />
             ) : (
               <Icons name="LABEL" className="" />
             )}
-          </span>
+          </button>
           <input
             type="text"
             id={`${label.id}`}
-            className={`flex-1 min-w-0 mx-2 bg-transparent outline-none py-1 transition-all ${isFocused ? "border-b border-gray-300" : "border-b border-transparent group-hover:border-gray-300"}`}
+            className={`flex-1 min-w-0 mx-3 bg-transparent py-2 rounded-lg transition-all placeholder:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${isFocused ? "border border-gray-200" : "border border-transparent group-hover:border-gray-200"}`}
             placeholder="Enter label name"
             value={label.name}
             onFocus={() => setIsFocused(true)}
@@ -52,8 +54,9 @@ const LabelList = ({
           />
           <label
             htmlFor={`${label.id}`}
-            className="p-1 flex shrink-0 items-center justify-center w-8 h-8 text-gray-500 rounded-full hover:bg-gray-100 cursor-pointer transition-colors"
-            title="Edit label"
+            className="p-1 flex shrink-0 items-center justify-center w-9 h-9 text-gray-500 rounded-full hover:bg-gray-100 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-300"
+            title="Save label"
+            aria-label={`Save label ${label.name}`}
           >
             {isFocused ? <Icons name="TRUE" /> : <Icons name="EDIT_PEN" />}
           </label>
@@ -65,7 +68,7 @@ const LabelList = ({
               id={`${label.id}`}
               data-name={label.name}
               type="checkbox"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-200"
               onChange={(e) => updateLabelHandler(e)}
               checked={isChecked}
             />

@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { ILabel } from "../../interfaces/interfaces";
 import useAuth from "../../hooks/useAuth";
 import labelService from "../../lib/firebase/services/label.service";
+import { toast } from "react-toastify";
 
 export const useLabelHandler = () => {
   const [labels, setLabels] = useState<ILabel[]>([]);
@@ -47,8 +48,51 @@ export const useLabelHandler = () => {
   };
 
   const deleteLabelHandler = (id: string | number) => {
-    labelService.delete(id.toString()).then(() => {
-      setLabels((prevLabels) => prevLabels.filter((label) => label.id !== id));
+    const labelToDelete = labels.find((label) => label.id === id);
+    if (!labelToDelete) return;
+
+    // Optimistic UI update
+    setLabels((prevLabels) => prevLabels.filter((label) => label.id !== id));
+
+    const toastId = toast(
+      React.createElement(
+        "div",
+        { className: "flex items-center justify-between gap-3" },
+        [
+          React.createElement(
+            "span",
+            { key: "text", className: "text-sm text-gray-800" },
+            `Deleted "${labelToDelete.name}"`,
+          ),
+          React.createElement(
+            "button",
+            {
+              key: "btn",
+              className:
+                "text-xs font-semibold text-blue-600 hover:text-blue-700 focus:outline-none",
+              onClick: () => {
+                labelService
+                  .create({ name: labelToDelete.name, user_id: loggedUser?.id })
+                  .then((result) => {
+                    setLabels((prev) => [
+                      ...prev,
+                      { ...labelToDelete, id: result.id },
+                    ]);
+                  });
+                toast.dismiss(toastId);
+              },
+            },
+            "Undo",
+          ),
+        ],
+      ),
+      { type: "info", autoClose: 5000, closeOnClick: false },
+    );
+
+    labelService.delete(id.toString()).catch(() => {
+      setLabels((prevLabels) => [...prevLabels, labelToDelete]);
+      toast.dismiss(toastId);
+      toast.error("Failed to delete label. Please try again.");
     });
   };
 

@@ -55,6 +55,17 @@ export default function CreateNote({
     [closeModalHandler, notes, noteHandler, noteLabels, note],
   );
 
+  const closeOnlyHandler = useCallback(
+    (e?: React.MouseEvent<HTMLButtonElement>) => {
+      e?.preventDefault();
+      setIsExpanded(false);
+      setNotes({ ...note, title: "", description: "", labels: [] });
+      setNoteLabels([]);
+      closeModalHandler();
+    },
+    [closeModalHandler, note],
+  );
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -131,6 +142,7 @@ export default function CreateNote({
               type="text"
               placeholder="Title"
               value={notes.title}
+              autoFocus
               onChange={(e) => setNotes({ ...notes, title: e.target.value })}
             />
           </div>
@@ -139,7 +151,6 @@ export default function CreateNote({
               className="w-full min-h-[100px] text-gray-700 focus:outline-none placeholder-gray-500 bg-transparent resize-none"
               placeholder="Take a note..."
               value={notes.description}
-              autoFocus={isInline}
               onChange={(e) =>
                 setNotes({ ...notes, description: e.target.value })
               }
@@ -165,20 +176,6 @@ export default function CreateNote({
 
           <div className="px-2 py-2 flex items-center justify-between border-t border-transparent hover:border-gray-100 transition-colors">
             <div className="flex gap-1">
-              <button
-                type="button"
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"
-                title="Remind me"
-              >
-                <Icons name="LABEL" className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"
-                title="Collaborator"
-              >
-                <Icons name="IMAGE" className="w-5 h-5" />
-              </button>
               <div className="relative">
                 <button
                   type="button"
@@ -213,14 +210,23 @@ export default function CreateNote({
                 )}
               </div>
             </div>
-            <button
-              className="px-6 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded transition-colors flex items-center gap-2"
-              type="button"
-              onClick={() => noteSaveHandler()}
-            >
-              <Icons name="TRUE" className="w-4 h-4" />
-              Close
-            </button>
+            <div className="flex gap-2">
+              <button
+                className="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                type="button"
+                onClick={closeOnlyHandler}
+              >
+                Close
+              </button>
+              <button
+                className="px-6 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded transition-colors flex items-center gap-2"
+                type="button"
+                onClick={noteSaveHandler}
+              >
+                <Icons name="TRUE" className="w-4 h-4" />
+                Save
+              </button>
+            </div>
           </div>
         </>
       ) : (
@@ -232,9 +238,6 @@ export default function CreateNote({
           <div className="flex gap-2">
             <button className="p-2 hover:bg-gray-100 rounded-full text-gray-600">
               <Icons name="TRUE" />
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-full text-gray-600">
-              <Icons name="IMAGE" />
             </button>
           </div>
         </div>
@@ -252,7 +255,7 @@ export default function CreateNote({
     <CommonModal
       setShowModal={setShowModal!}
       onSave={() => noteSaveHandler()}
-      onClose={() => noteSaveHandler()}
+      onClose={() => closeOnlyHandler()}
       hasBottomButton={false}
     >
       <div className="p-2">{renderContent()}</div>
