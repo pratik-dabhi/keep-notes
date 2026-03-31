@@ -39,7 +39,6 @@ const Notes = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
   const [initialNote, setInitialNote] = useState<TNote>(initialNotes);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   const loadNotes = useCallback(() => {
     notesService
@@ -63,12 +62,6 @@ const Notes = () => {
   useEffect(() => {
     loadNotes();
   }, [loadNotes]);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 640);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     if (!showModal) {
@@ -228,10 +221,7 @@ const Notes = () => {
 
         {/* Notes Grid */}
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable
-            droppableId="notes"
-            direction={isMobile ? "vertical" : "horizontal"}
-          >
+          <Droppable droppableId="notes" direction="vertical">
             {(provided) => (
               <div
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 max-w-[1400px] mx-auto"

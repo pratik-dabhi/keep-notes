@@ -82,7 +82,7 @@ const Header = () => {
         </div>
       ) : (
         <>
-          <div className="flex items-center gap-1 sm:gap-2 min-w-[140px] md:min-w-[200px] lg:min-w-[280px]">
+          <div className="flex items-center gap-1 sm:gap-2 min-w-fit md:min-w-[200px] lg:min-w-[280px]">
             <button
               onClick={() => setCollapsed(!isCollapsed)}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -92,7 +92,7 @@ const Header = () => {
             </button>
 
             <div className="flex items-center gap-2">
-              <span className="text-xl font-medium text-gray-700 hidden sm:block">
+              <span className="text-xl font-medium text-gray-700">
                 {import.meta.env.VITE_APP_NAME || "Keep Notes"}
               </span>
             </div>
