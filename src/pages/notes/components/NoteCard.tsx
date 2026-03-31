@@ -20,7 +20,7 @@ const NoteCard = ({
 
   return (
     <div
-      className="group relative flex flex-col bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-default h-fit"
+      className="group relative flex flex-col bg-white border border-gray-200 rounded-lg p-4 pb-10 sm:pb-4 hover:shadow-md transition-shadow cursor-default h-fit"
       style={{ backgroundColor: color || "white" }}
       id={`${id}`}
       onClick={(e) => !isVisible && onClickHandler(e.currentTarget.id)}
@@ -47,7 +47,7 @@ const NoteCard = ({
       </div>
 
       {/* Hover Actions */}
-      <div className="absolute bottom-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute bottom-2 right-2 flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
         <button
           className="p-1.5 hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
           title="Delete"

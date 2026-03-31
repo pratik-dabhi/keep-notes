@@ -34,7 +34,7 @@ const Sidebar = () => {
   return (
     <>
       <aside
-        className={`h-screen bg-white transition-all duration-300 border-r flex flex-col ${isCollapsed ? "w-20" : "w-64"}`}
+        className={`h-screen bg-white transition-all duration-300 border-r flex flex-col ${isCollapsed ? "w-20" : "w-52 lg:w-64"}`}
       >
         <div className="flex-grow overflow-y-auto overflow-x-hidden pt-4">
           <ul className="flex flex-col space-y-1">

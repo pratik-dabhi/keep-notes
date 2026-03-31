@@ -55,7 +55,7 @@ export default function CommonModal({
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className={`border-0 rounded-lg shadow-lg relative flex flex-col md:w-[500px] lg:w-[700px] bg-white outline-none focus:outline-none ${width}`}
+            className={`border-0 rounded-lg shadow-lg relative flex flex-col w-[90vw] md:w-[500px] lg:w-[700px] bg-white outline-none focus:outline-none ${width}`}
           >
             <div className="flex items-start justify-between border-b border-solid border-blueGray-200 rounded-t">
               {header}

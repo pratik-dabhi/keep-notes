@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   DragDropContext,
   Draggable,
@@ -33,6 +39,7 @@ const Notes = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
   const [initialNote, setInitialNote] = useState<TNote>(initialNotes);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   const loadNotes = useCallback(() => {
     notesService
@@ -58,6 +65,12 @@ const Notes = () => {
   }, [loadNotes]);
 
   useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     if (!showModal) {
       closeModalHandler();
     }
@@ -71,7 +84,9 @@ const Notes = () => {
   const getNextOrderIndex = useCallback(() => {
     if (!notes.length) return 0;
     const maxOrder = Math.max(
-      ...notes.map((item) => (typeof item.orderIndex === "number" ? item.orderIndex : 0)),
+      ...notes.map((item) =>
+        typeof item.orderIndex === "number" ? item.orderIndex : 0,
+      ),
     );
     return maxOrder + 1;
   }, [notes]);
@@ -84,7 +99,7 @@ const Notes = () => {
     const computedOrderIndex =
       typeof note.orderIndex === "number"
         ? note.orderIndex
-        : existingNote?.orderIndex ?? getNextOrderIndex();
+        : (existingNote?.orderIndex ?? getNextOrderIndex());
 
     const noteWithOrder: TNote = { ...note, orderIndex: computedOrderIndex };
 
@@ -92,10 +107,15 @@ const Notes = () => {
       notesService
         .update({ id: noteWithOrder.id as string, data: noteWithOrder })
         .then(() => {});
-      const notesIndex = notes.findIndex((item) => item.id === noteWithOrder.id);
+      const notesIndex = notes.findIndex(
+        (item) => item.id === noteWithOrder.id,
+      );
       if (notesIndex !== -1) {
         const updatedNotes = [...notes];
-        updatedNotes[notesIndex] = { ...updatedNotes[notesIndex], ...noteWithOrder };
+        updatedNotes[notesIndex] = {
+          ...updatedNotes[notesIndex],
+          ...noteWithOrder,
+        };
         setNotes(updatedNotes);
       }
     } else {
@@ -208,11 +228,17 @@ const Notes = () => {
 
         {/* Notes Grid */}
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="notes" direction="horizontal">
+          <Droppable
+            droppableId="notes"
+            direction={isMobile ? "vertical" : "horizontal"}
+          >
             {(provided) => (
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 max-w-[1400px] mx-auto"
-                style={{ gridAutoRows: `${gridRowHeight}px`, gridAutoFlow: "row dense" }}
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 max-w-[1400px] mx-auto"
+                style={{
+                  gridAutoRows: `${gridRowHeight}px`,
+                  gridAutoFlow: "row dense",
+                }}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >

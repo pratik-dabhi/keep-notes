@@ -14,6 +14,7 @@ const Header = () => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const onSearchHandler = (slug: string) => {
@@ -52,78 +53,116 @@ const Header = () => {
     : "U";
 
   return (
-    <header className="h-16 border-b bg-white flex items-center gap-4 px-4 sticky top-0 z-50">
-      <div className="flex items-center gap-2 min-w-[200px] md:min-w-[280px]">
-        <button
-          onClick={() => setCollapsed(!isCollapsed)}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          title="Main menu"
-        >
-          <Icons name="MENU" className="w-6 h-6 text-gray-600" />
-        </button>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-medium text-gray-700 hidden sm:block">
-            {import.meta.env.VITE_APP_NAME || "Keep Notes"}
-          </span>
+    <header className="h-16 border-b bg-white flex items-center gap-2 sm:gap-4 px-2 sm:px-4 sticky top-0 z-50">
+      {isMobileSearchOpen ? (
+        <div className="flex-1 flex items-center w-full md:hidden">
+          <button
+            onClick={() => setIsMobileSearchOpen(false)}
+            className="p-2 mr-1 hover:bg-gray-100 rounded-full transition-colors"
+            title="Back"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+          </button>
+          <div className="flex-1 w-full -ml-2">
+            <Search placeholder="Search" onSearchHandler={onSearchHandler} />
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex items-center gap-1 sm:gap-2 min-w-[140px] md:min-w-[200px] lg:min-w-[280px]">
+            <button
+              onClick={() => setCollapsed(!isCollapsed)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              title="Main menu"
+            >
+              <Icons name="MENU" className="w-6 h-6 text-gray-600" />
+            </button>
 
-      <div className="flex-1 max-w-2xl">
-        <Search placeholder="Search" onSearchHandler={onSearchHandler} />
-      </div>
-
-      <div
-        className="flex items-center gap-2 min-w-[120px] md:min-w-[200px] justify-end relative ml-auto"
-        ref={dropdownRef}
-      >
-        <button
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="p-1 hover:bg-gray-100 rounded-full transition-colors flex items-center gap-2 focus:outline-none"
-          title="Account"
-        >
-          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-indigo-600 text-white font-medium text-sm shadow-sm">
-            {userInitials}
-          </div>
-          {loggedUser && (
-            <span className="text-sm font-medium text-gray-700 hidden lg:block pr-2">
-              {loggedUser.username}
-            </span>
-          )}
-        </button>
-
-        {isDropdownOpen && (
-          <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-[100]">
-            <div className="px-4 py-2 border-b border-gray-100 mb-2">
-              <p className="text-sm font-semibold text-gray-800 truncate">
-                {loggedUser?.username}
-              </p>
-              <p className="text-xs text-gray-500 truncate">
-                {loggedUser?.email}
-              </p>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-medium text-gray-700 hidden sm:block">
+                {import.meta.env.VITE_APP_NAME || "Keep Notes"}
+              </span>
             </div>
-
-            <button
-              onClick={() => {
-                setShowEditModal(true);
-                setIsDropdownOpen(false);
-              }}
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
-            >
-              <Icons name="PEN" className="w-4 h-4" />
-              Edit Profile
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
-            >
-              <Icons name="LOGOUT" className="w-4 h-4 text-red-600" />
-              Logout
-            </button>
           </div>
-        )}
-      </div>
+
+          <div className="flex-1 max-w-2xl hidden md:block">
+            <Search placeholder="Search" onSearchHandler={onSearchHandler} />
+          </div>
+
+          <div
+            className="flex items-center gap-1 sm:gap-2 justify-end relative ml-auto"
+            ref={dropdownRef}
+          >
+            <button
+              onClick={() => setIsMobileSearchOpen(true)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors flex items-center justify-center text-gray-600"
+              title="Search"
+            >
+              <Icons name="SEARCH" className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="p-1 hover:bg-gray-100 rounded-full transition-colors flex items-center gap-2 focus:outline-none"
+              title="Account"
+            >
+              <div className="w-8 h-8 rounded-full flex items-center justify-center bg-indigo-600 text-white font-medium text-sm shadow-sm">
+                {userInitials}
+              </div>
+              {loggedUser && (
+                <span className="text-sm font-medium text-gray-700 hidden lg:block pr-2">
+                  {loggedUser.username}
+                </span>
+              )}
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-[100]">
+                <div className="px-4 py-2 border-b border-gray-100 mb-2">
+                  <p className="text-sm font-semibold text-gray-800 truncate">
+                    {loggedUser?.username}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {loggedUser?.email}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setShowEditModal(true);
+                    setIsDropdownOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+                >
+                  <Icons name="PEN" className="w-4 h-4" />
+                  Edit Profile
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
+                >
+                  <Icons name="LOGOUT" className="w-4 h-4 text-red-600" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       {showEditModal && loggedUser && (
         <EditProfile

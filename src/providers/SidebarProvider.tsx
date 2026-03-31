@@ -4,7 +4,7 @@ import { IChildrenProps } from "../interfaces/interfaces";
 
 const SidebarProvider = ({ children }: IChildrenProps) => {
   const [isVisible, setVisible] = useState(false);
-  const [isCollapsed, setCollapsed] = useState(false);
+  const [isCollapsed, setCollapsed] = useState(window.innerWidth < 1024);
 
   return (
     <SidebarContext.Provider
